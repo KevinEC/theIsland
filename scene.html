@@ -20,6 +20,7 @@
 			var windowHalfX = window.innerWidth / 2;
 			var windowHalfY = window.innerHeight / 2;
 			
+			//Nodes and mesh nodes
 			var sceneRoot = new THREE.Group();
 			var island = new THREE.Group();
 			var islandMesh;
@@ -47,6 +48,13 @@
 				renderer.setClearColor( );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				container.appendChild( renderer.domElement );
+				
+				//Add geometries and meshes!
+				
+				//Top level node
+				scene.add( sceneRoot );
+				
+				//Create branches
 				
 				window.addEventListener( 'resize', onWindowResize, false );
 
