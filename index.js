@@ -52,8 +52,8 @@ function init() {
 	container.appendChild( renderer.domElement );
 	
 	//Geometries and meshes
-	var geometryOcean = new THREE.PlaneGeometry(5, 20, 32);
-	var materialOcean = new THREE.MeshBasicMaterial(  {color: 0xffff00, side: THREE.DoubleSide}  );
+	var geometryOcean = new THREE.PlaneGeometry(60, 60, 32, 32);
+	var materialOcean = new THREE.MeshBasicMaterial(  {color: 0xffff00, wireframe: true }  );
 	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
 	
 	//Top level node
@@ -72,13 +72,13 @@ function init() {
 function render() {
 	
 	// Set up the camera
-	camera.position.x = 0;
-	camera.position.y = -mouseY*10;
+	camera.position.x = 0.5;
+	camera.position.x = -mouseX*10;
 	camera.lookAt( scene.position );
 	
 	//perform animations
-	oceanSpin.rotation.x = 3.14;
-	oceanTrans.position.set(0, 0, -5)
+	oceanSpin.rotation.x = 3.14/2;
+	oceanTrans.position.set(0, -3, -5);
 	
 	// Render the scene
 	renderer.render( scene, camera );
