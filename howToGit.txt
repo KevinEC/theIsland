@@ -1,4 +1,6 @@
-cd //Ändra plats i filstruktur
+﻿cd //Ändra plats i filstruktur
+
+yeah yeah
 
 git clone url //Kopiera ner till lokalt
 
