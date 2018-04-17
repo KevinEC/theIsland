@@ -1,7 +1,5 @@
 var THREE = require("three");
 
-let container;
-
 /* THREE js code goes here */
 let container;
 let camera, scene, renderer;
@@ -31,9 +29,14 @@ function onWindowResize() {
 }
 
 function onDocumentMouseMove( event ) {
+
+	console.log(event);
+	if(event.ctrlKey)
+	{
     // mouseX, mouseY are in the range [-1, 1]
 	mouseX = ( event.clientX - windowHalfX ) / windowHalfX;
 	mouseY = ( event.clientY - windowHalfY ) / windowHalfY;
+	}
 }
 
 function init() {
