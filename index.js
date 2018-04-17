@@ -93,5 +93,4 @@ function animate () {
 };
 
 init();
-console.log(scene);
 animate();
