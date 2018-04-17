@@ -90,5 +90,4 @@ var animate = function () {
 };
 
 init();
-console.log(scene);
 animate();
