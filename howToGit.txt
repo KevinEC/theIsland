@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿cd //Ändra plats i filstruktur
 <<<<<<< HEAD
 
@@ -5,11 +6,18 @@ yeah yeah
 =======
 >>>>>>> 77187522221600b0b89e2d752c50f8b88467faa7
 
+=======
+﻿-- START UP new computer --
+cd //Ändra plats i filstruktur till där du vill spara filerna
+>>>>>>> 5cd2fd9ceecb8af060a8861ca7d7ab2d4f7d29b4
 git clone url //Kopiera ner till lokalt
 
-cd theIsland // till master
 
-Koda i alla filerna som kopierats ner
+cd theIsland // hitta in till master-mappen så du kan pusha/pulla
+
+git pull // uppdatera alla filer innan ni kodar 
+
+=> Koda 
 
 git add . // ALTERNATIVT -p // Lägg till alla filer som redigerats
 
@@ -18,5 +26,3 @@ git commit -m "kommentar" //Lägg till kommentar om filen
 git push // Ladda upp
 
 esc: WQ
-
-Det här är en onödig text
