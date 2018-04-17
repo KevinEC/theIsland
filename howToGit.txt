@@ -1,8 +1,13 @@
 ﻿cd //Ändra plats i filstruktur
+<<<<<<< HEAD
 
 yeah yeah
+=======
+>>>>>>> 77187522221600b0b89e2d752c50f8b88467faa7
 
 git clone url //Kopiera ner till lokalt
+
+cd theIsland // till master
 
 Koda i alla filerna som kopierats ner
 
@@ -13,3 +18,5 @@ git commit -m "kommentar" //Lägg till kommentar om filen
 git push // Ladda upp
 
 esc: WQ
+
+Det här är en onödig text
