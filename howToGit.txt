@@ -1,17 +1,9 @@
-<<<<<<< HEAD
-﻿cd //Ändra plats i filstruktur
-<<<<<<< HEAD
+﻿﻿cd //Ändra plats i filstruktur
 
-yeah yeah
-=======
->>>>>>> 77187522221600b0b89e2d752c50f8b88467faa7
-
-=======
 ﻿-- START UP new computer --
 cd //Ändra plats i filstruktur till där du vill spara filerna
->>>>>>> 5cd2fd9ceecb8af060a8861ca7d7ab2d4f7d29b4
-git clone url //Kopiera ner till lokalt
 
+git clone url //Kopiera ner till lokalt
 
 cd theIsland // hitta in till master-mappen så du kan pusha/pulla
 
