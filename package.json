@@ -4,7 +4,8 @@
   "description": "a 3d project in the course tnmo61 at Liu",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "app": "budo index.js:bundle.js --live"
   },
   "repository": {
     "type": "git",
