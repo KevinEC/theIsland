@@ -1,0 +1,13 @@
+cd //Ändra plats i filstruktur
+
+git clone url //Kopiera ner till lokalt
+
+Koda i alla filerna som kopierats ner
+
+git add . // ALTERNATIVT -p // Lägg till alla filer som redigerats
+
+git commit -m "kommentar" //Lägg till kommentar om filen
+
+git push // Ladda upp
+
+esc: WQ
