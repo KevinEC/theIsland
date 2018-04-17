@@ -1,23 +1,23 @@
 var THREE = require("three");
 
-var container;
+let container;
 
 /* THREE js code goes here */
-var container;
-var camera, scene, renderer;
+let container;
+let camera, scene, renderer;
 
-var mouseX = 0, mouseY = 0;
+let mouseX = 0, mouseY = 0;
 
-var windowHalfX = window.innerWidth / 2;
-var windowHalfY = window.innerHeight / 2;
+let windowHalfX = window.innerWidth / 2;
+let windowHalfY = window.innerHeight / 2;
 
 //Nodes and mesh nodes
-var sceneRoot = new THREE.Group();
-var oceanTrans = new THREE.Group();
-var oceanSpin = new THREE.Group();
-var islandTrans = new THREE.Group();
-var oceanMesh;
-var islandMesh;
+let sceneRoot = new THREE.Group();
+let oceanTrans = new THREE.Group();
+let oceanSpin = new THREE.Group();
+let islandTrans = new THREE.Group();
+let oceanMesh;
+let islandMesh;
 
 
 function onWindowResize() {
@@ -52,8 +52,8 @@ function init() {
 	container.appendChild( renderer.domElement );
 	
 	//Geometries and meshes
-	var geometryOcean = new THREE.PlaneGeometry(60, 60, 32, 32);
-	var materialOcean = new THREE.MeshBasicMaterial(  {color: 0xffff00, wireframe: true }  );
+	let geometryOcean = new THREE.PlaneGeometry(60, 60, 32, 32);
+	let materialOcean = new THREE.MeshBasicMaterial(  {color: 0xffff00, wireframe: true }  );
 	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
 	
 	//Top level node
@@ -84,7 +84,7 @@ function render() {
 	renderer.render( scene, camera );
 }
 
-var animate = function () {
+function animate () {
 	requestAnimationFrame( animate );
 	render();
 };
