@@ -1,0 +1,19 @@
+{
+  "name": "theisland",
+  "version": "1.0.0",
+  "description": "a 3d project in the course tnmo61 at Liu",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KevinEC/theIsland.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KevinEC/theIsland/issues"
+  },
+  "homepage": "https://github.com/KevinEC/theIsland#readme"
+}
