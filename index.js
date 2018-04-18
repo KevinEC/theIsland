@@ -69,7 +69,7 @@ function oceanInit(){
 	
 	//Geometries and meshes
 	let geometryOcean = new THREE.PlaneGeometry(60, 60, 32, 32);
-	let materialOcean = new THREE.MeshBasicMaterial(  {color: 0xffff00, wireframe: true }  );
+	let materialOcean = new THREE.MeshBasicMaterial( {color: 0xffff00, wireframe: true } );
 	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
 	
 	//Create branches
@@ -80,8 +80,13 @@ function oceanInit(){
 
 function islandInit(){
 	
-	//let loader = new THREE.TDSLoader();
-	//loader.load( 'test.3ds' , object );
+	let materialIsland = new THREE.MeshBasicMaterial( {color: 0xffff00, wireframe: true } );
+	
+	let loader = new THREE.OBJLoader();
+	loader.load( 'island.obj' , function (geometryIsland) {
+		islandMesh = new THREE.Mesh( geometryIsland, materialIsland );
+		islandTrans.add( islandMesh );
+	};
 }
 
 
