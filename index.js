@@ -109,7 +109,7 @@ function islandInit(){
 	};
 	
 	let loader = new THREE.OBJLoader( manager );
-	loader.load( 'island.obj' , 
+	loader.load( 'island1.obj' , 
 		
 		function (geometryIsland) {
 		geometryIsland.traverse( function ( child ) {
