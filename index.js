@@ -1,5 +1,7 @@
 var THREE = require("three");
 var glslify = require("glslify");
+var OBJLoader = require('three-obj-loader');
+OBJLoader(THREE);
 
 /* THREE js code goes here */
 let container;
@@ -19,7 +21,6 @@ let oceanMesh;
 let islandMesh;
 
 let clock = new THREE.Clock();
-console.log(clock);
 
 
 function onWindowResize() {
@@ -34,9 +35,8 @@ function onWindowResize() {
 
 function onDocumentMouseMove( event ) {
 
-	console.log(event);
 	if(event.ctrlKey)
-	{
+	{ 
     // mouseX, mouseY are in the range [-1, 1]
 	mouseX = ( event.clientX - windowHalfX ) / windowHalfX;
 	mouseY = ( event.clientY - windowHalfY ) / windowHalfY;
@@ -71,10 +71,10 @@ function init() {
 
 function oceanInit(){
 	
-	/* old code
+	/*
 	//Geometries and meshes
 	let geometryOcean = new THREE.PlaneGeometry(60, 60, 32, 32);
-	let materialOcean = new THREE.MeshBasicMaterial(  {color: 0xffff00, wireframe: true }  );
+	let materialOcean = new THREE.MeshBasicMaterial( {color: 0xffff00, wireframe: true } );
 	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
 	
 	//Create branches
@@ -94,26 +94,52 @@ function oceanInit(){
 		}
 	});
 
-	let displacement = new Float32Array(geometryOcean.attributes.position.count);
-	for (var i = 0; i < displacement.length; i++) {
-		displacement[i]*Math.random
-	}
-	geometryOcean.addAttribute("displacement", new THREE.BufferAttribute(ArrayofRndmnums, 1));
+
 
 
 	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
-	
+
 	//Create branches
 	sceneRoot.add( oceanTrans );
 	oceanTrans.add( oceanSpin );
 	oceanSpin.add( oceanMesh );
+
 	
 }
 
 function islandInit(){
 	
-	//let loader = new THREE.TDSLoader();
-	//loader.load( 'test.3ds' , object );
+	let materialIsland = new THREE.MeshBasicMaterial( {color: 0xffff00, wireframe: true } );
+	sceneRoot.add(islandTrans);
+	
+	let manager = new THREE.LoadingManager();
+	manager.onProgress = function ( item, loaded, total ) {
+		console.log( item, loaded, total );
+	};
+	
+	let loader = new THREE.OBJLoader( manager );
+	loader.load( 'island1.obj' , 
+		
+		function (geometryIsland) {
+		geometryIsland.traverse( function ( child ) {
+			if ( child instanceof THREE.Mesh ) {
+				child.material = materialIsland;
+			}
+		} );
+		islandTrans.add( geometryIsland );
+		},
+		function ( xhr ) {
+		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+		},
+		
+		// called when loading has errors
+		function ( error ) {
+
+			console.log( 'An error happened' );
+
+		}
+	);
+	
 }
 
 
@@ -123,10 +149,17 @@ function render() {
 	camera.position.x = 0.5;
 	camera.position.x = -mouseX*10;
 	camera.lookAt( scene.position );
+
+	deltaTime = clock.getDelta();
+
+	oceanMesh.material.uniforms.time.value = deltaTime;
+
 	
 	//perform animations
 	oceanSpin.rotation.x = 3.14/2;
 	oceanTrans.position.set(0, -3, -5);
+	
+	islandTrans.position.set(0, -3, 5);
 	
 	// Render the scene
 	renderer.render( scene, camera );
@@ -135,7 +168,7 @@ function render() {
 function animate () {
 	requestAnimationFrame( animate );
 	render();
-};
+}
 
 init();
 animate();

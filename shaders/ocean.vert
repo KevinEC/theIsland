@@ -1,10 +1,5 @@
-//arguments from three js goes here
-
-uniform float time;
-
-//code goes here
 void main()
 {
-	gl_Position = 
+	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 }
 
