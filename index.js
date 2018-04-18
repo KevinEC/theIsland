@@ -55,23 +55,36 @@ function init() {
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	container.appendChild( renderer.domElement );
 	
+	//Top level node
+	scene.add( sceneRoot );
+	
+	oceanInit();
+	islandInit();
+		
+	document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+	window.addEventListener( 'resize', onWindowResize, false );
+
+}
+
+function oceanInit(){
+	
 	//Geometries and meshes
 	let geometryOcean = new THREE.PlaneGeometry(60, 60, 32, 32);
 	let materialOcean = new THREE.MeshBasicMaterial(  {color: 0xffff00, wireframe: true }  );
 	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
 	
-	//Top level node
-	scene.add( sceneRoot );
-	
 	//Create branches
 	sceneRoot.add( oceanTrans );
 	oceanTrans.add( oceanSpin );
 	oceanSpin.add( oceanMesh );
-	
-	document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-	window.addEventListener( 'resize', onWindowResize, false );
-
 }
+
+function islandInit(){
+	
+	//let loader = new THREE.TDSLoader();
+	//loader.load( 'test.3ds' , object );
+}
+
 
 function render() {
 	
