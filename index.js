@@ -23,6 +23,8 @@ let islandMesh;
 let clock = new THREE.Clock();
 
 
+console.log(glslify('./shaders/ocean.vert'));
+
 function onWindowResize() {
 	windowHalfX = window.innerWidth / 2;
 	windowHalfY = window.innerHeight / 2;
@@ -87,10 +89,10 @@ function oceanInit(){
 	let geometryOcean = new THREE.PlaneBufferGeometry(60, 60, 32, 32);
 
 	let materialOcean = new THREE.ShaderMaterial({
-		vertexShader: glslify("shaders/ocean.vert"),
-		fragmentShader: glslify("shaders/ocean.frag"),
+		vertexShader: glslify("./shaders/ocean.vert"),
+		fragmentShader: glslify("./shaders/ocean.frag"),
 		uniforms: {
-			time: 1.0,
+			time: {type: "f", value: 1.0}
 		}
 	});
 
