@@ -68,9 +68,26 @@ function init() {
 
 function oceanInit(){
 	
+	/* old code
 	//Geometries and meshes
 	let geometryOcean = new THREE.PlaneGeometry(60, 60, 32, 32);
 	let materialOcean = new THREE.MeshBasicMaterial(  {color: 0xffff00, wireframe: true }  );
+	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
+	
+	//Create branches
+	sceneRoot.add( oceanTrans );
+	oceanTrans.add( oceanSpin );
+	oceanSpin.add( oceanMesh );
+
+	*/
+	//Geometries and meshes
+	let geometryOcean = new THREE.PlaneBufferGeometry(60, 60, 32, 32);
+
+	let materialOcean = new THREE.ShaderMaterial({
+		vertexShader: glslify("shaders/ocean.vert"),
+		fragmentShader: glslify("shaders/ocean.frag"),
+		uniforms: {}
+	});
 	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
 	
 	//Create branches
