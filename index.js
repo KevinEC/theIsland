@@ -1,4 +1,5 @@
 var THREE = require("three");
+var glslify = require("glslify");
 
 /* THREE js code goes here */
 let container;
