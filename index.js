@@ -18,6 +18,9 @@ let islandTrans = new THREE.Group();
 let oceanMesh;
 let islandMesh;
 
+let clock = new THREE.Clock();
+console.log(clock);
+
 
 function onWindowResize() {
 	windowHalfX = window.innerWidth / 2;
@@ -86,14 +89,25 @@ function oceanInit(){
 	let materialOcean = new THREE.ShaderMaterial({
 		vertexShader: glslify("shaders/ocean.vert"),
 		fragmentShader: glslify("shaders/ocean.frag"),
-		uniforms: {}
+		uniforms: {
+			time: 1.0,
+		}
 	});
+
+	let displacement = new Float32Array(geometryOcean.attributes.position.count);
+	for (var i = 0; i < displacement.length; i++) {
+		displacement[i]*Math.random
+	}
+	geometryOcean.addAttribute("displacement", new THREE.BufferAttribute(ArrayofRndmnums, 1));
+
+
 	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
 	
 	//Create branches
 	sceneRoot.add( oceanTrans );
 	oceanTrans.add( oceanSpin );
 	oceanSpin.add( oceanMesh );
+	
 }
 
 function islandInit(){
