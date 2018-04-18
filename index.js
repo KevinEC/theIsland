@@ -1,5 +1,7 @@
 var THREE = require("three");
 var glslify = require("glslify");
+var OBJLoader = require('three-obj-loader');
+OBJLoader(THREE);
 
 /* THREE js code goes here */
 let container;
@@ -68,7 +70,7 @@ function init() {
 
 function oceanInit(){
 	
-	/* old code
+	
 	//Geometries and meshes
 	let geometryOcean = new THREE.PlaneGeometry(60, 60, 32, 32);
 	let materialOcean = new THREE.MeshBasicMaterial( {color: 0xffff00, wireframe: true } );
@@ -79,7 +81,7 @@ function oceanInit(){
 	oceanTrans.add( oceanSpin );
 	oceanSpin.add( oceanMesh );
 
-	*/
+	/*
 	//Geometries and meshes
 	let geometryOcean = new THREE.PlaneBufferGeometry(60, 60, 32, 32);
 
@@ -93,18 +95,42 @@ function oceanInit(){
 	//Create branches
 	sceneRoot.add( oceanTrans );
 	oceanTrans.add( oceanSpin );
-	oceanSpin.add( oceanMesh );
+	oceanSpin.add( oceanMesh );*/
 }
 
 function islandInit(){
 	
 	let materialIsland = new THREE.MeshBasicMaterial( {color: 0xffff00, wireframe: true } );
+	sceneRoot.add(islandTrans);
 	
-	let loader = new THREE.OBJLoader();
-	loader.load( 'island.obj' , function (geometryIsland) {
-		islandMesh = new THREE.Mesh( geometryIsland, materialIsland );
-		islandTrans.add( islandMesh );
+	let manager = new THREE.LoadingManager();
+	manager.onProgress = function ( item, loaded, total ) {
+		console.log( item, loaded, total );
 	};
+	
+	let loader = new THREE.OBJLoader( manager );
+	loader.load( 'island.obj' , 
+		
+		function (geometryIsland) {
+		geometryIsland.traverse( function ( child ) {
+			if ( child instanceof THREE.Mesh ) {
+				child.material = materialIsland;
+			}
+		} );
+		islandTrans.add( geometryIsland );
+		},
+		function ( xhr ) {
+		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+		},
+		
+		// called when loading has errors
+		function ( error ) {
+
+			console.log( 'An error happened' );
+
+		}
+	);
+	
 }
 
 
@@ -119,6 +145,8 @@ function render() {
 	oceanSpin.rotation.x = 3.14/2;
 	oceanTrans.position.set(0, -3, -5);
 	
+	islandTrans.position.set(0, -3, 5);
+	
 	// Render the scene
 	renderer.render( scene, camera );
 }
@@ -126,7 +154,7 @@ function render() {
 function animate () {
 	requestAnimationFrame( animate );
 	render();
-};
+}
 
 init();
 animate();
