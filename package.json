@@ -25,5 +25,10 @@
     "browserify": "^16.2.0",
     "budo": "^11.2.0",
     "glslify": "^6.1.1"
+  },
+  "browserify": {
+    "transform": [
+      "glslify"
+    ]
   }
 }

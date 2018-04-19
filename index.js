@@ -23,7 +23,7 @@ let islandMesh;
 let clock = new THREE.Clock();
 
 
-console.log(glslify('./shaders/ocean.vert'));
+//console.log(glslify('./shaders/ocean.vert'));
 
 function onWindowResize() {
 	windowHalfX = window.innerWidth / 2;
@@ -87,19 +87,20 @@ function oceanInit(){
 	*/
 	//Geometries and meshes
 	let geometryOcean = new THREE.PlaneBufferGeometry(60, 60, 32, 32);
+	console.log(geometryOcean.attributes.position);
 
 	let materialOcean = new THREE.ShaderMaterial({
 		vertexShader: glslify("./shaders/ocean.vert"),
 		fragmentShader: glslify("./shaders/ocean.frag"),
 		uniforms: {
 			time: {type: "f", value: 1.0}
-		}
+		},
+        flatShading: true,
+		wireframe: true
 	});
 
-
-
-
 	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
+	console.log(materialOcean);
 
 	//Create branches
 	sceneRoot.add( oceanTrans );
@@ -152,9 +153,9 @@ function render() {
 	camera.position.x = -mouseX*10;
 	camera.lookAt( scene.position );
 
-	deltaTime = clock.getDelta();
+	time = clock.getElapsedTime();
 
-	oceanMesh.material.uniforms.time.value = deltaTime;
+	oceanMesh.material.uniforms.time.value = time;
 
 	
 	//perform animations
