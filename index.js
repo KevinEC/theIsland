@@ -22,8 +22,7 @@ let islandMesh;
 
 let clock = new THREE.Clock();
 
-
-//console.log(glslify('./shaders/ocean.vert'));
+//console.log(glslify("./node_modules/webgl-noise/src/noise3D.glsl"));
 
 function onWindowResize() {
 	windowHalfX = window.innerWidth / 2;
@@ -94,8 +93,10 @@ function oceanInit(){
 		fragmentShader: glslify("./shaders/ocean.frag"),
 		uniforms: {
 			time: {type: "f", value: 1.0}
-		},
-        flatShading: true,
+		},/*
+		defines: {
+			noise: glslify("./node_modules/webgl-noise/src/noise3D.glsl")
+		},*/
 		wireframe: true
 	});
 
