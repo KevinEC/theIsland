@@ -85,7 +85,7 @@ function oceanInit(){
 
 	*/
 	//Geometries and meshes
-	let geometryOcean = new THREE.PlaneBufferGeometry(60, 60, 32, 32);
+	let geometryOcean = new THREE.PlaneBufferGeometry(60, 60, 60, 60);
 	console.log(geometryOcean.attributes.position);
 
 	let materialOcean = new THREE.ShaderMaterial({
