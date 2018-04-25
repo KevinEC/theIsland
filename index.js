@@ -7,6 +7,7 @@ OBJLoader(THREE);
 /* THREE js code goes here */
 let container;
 let camera, scene, renderer;
+let spotLight, lightHelper, shadowCameraHelper;
 
 let mouseX = 0, mouseY = 0;
 
@@ -51,7 +52,9 @@ function init() {
 	
 	camera = new THREE.PerspectiveCamera( 90, window.innerWidth/window.innerHeight, 0.1, 1000 );
 	let controls = new OrbitControls(camera);
-	camera.position.y = 2;
+	camera.position.y = 20;
+	camera.position.x = 100;
+	controls.update();
 	
 	scene = new THREE.Scene();
 
@@ -61,6 +64,8 @@ function init() {
 	renderer.setPixelRatio( window.devicePixelRatio );
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	container.appendChild( renderer.domElement );
+	renderer.shadowMap.enabled = true;
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 	
 	//Top level node
 	scene.add( sceneRoot );
@@ -76,39 +81,37 @@ function init() {
 
 function lightInit(){
 
-	var light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
-	sceneRoot.add( light );
+	var ambient = new THREE.AmbientLight( 0xffffff, 0.1 );
+	scene.add( ambient );
 
-	var spotLight = new THREE.SpotLight( 0xffffff );
-	spotLight.position.set( 50, 100, 100 );
+	var spotLight = new THREE.SpotLight( 0xffffff, 1 );
+	spotLight.position.set( 15, 40, 35 );
+	spotLight.angle = 3.14 / 4;
+	spotLight.penumbra = 0.01;
+	spotLight.decay = 2;
+	spotLight.distance = 20;
 
 	spotLight.castShadow = true;
 
 	spotLight.shadow.mapSize.width = 1024;
 	spotLight.shadow.mapSize.height = 1024;
 
-	spotLight.shadow.camera.near = 500;
-	spotLight.shadow.camera.far = 4000;
-	spotLight.shadow.camera.fov = 30;
+	spotLight.shadow.camera.near = 40;
+	spotLight.shadow.camera.far = 50;
+	spotLight.shadow.camera.fov = 50;
 
-	sceneRoot.add( spotLight );
+	scene.add( spotLight );
+
+	lightHelper = new THREE.SpotLightHelper( spotLight );
+	scene.add( lightHelper );
+	shadowCameraHelper = new THREE.CameraHelper( spotLight.shadow.camera );
+	scene.add( shadowCameraHelper );
+	scene.add( new THREE.AxesHelper( 10 ) );
+
 
 }
 
 function oceanInit(){
-	
-	/*
-	//Geometries and meshes
-	let geometryOcean = new THREE.PlaneGeometry(60, 60, 32, 32);
-	let materialOcean = new THREE.MeshBasicMaterial( {color: 0xffff00, wireframe: true } );
-	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
-	
-	//Create branches
-	sceneRoot.add( oceanTrans );
-	oceanTrans.add( oceanSpin );
-	oceanSpin.add( oceanMesh );
-
-	*/
 	//Geometries and meshes
 	let geometryOcean = new THREE.PlaneBufferGeometry(90, 90, 90, 90);
 	console.log(geometryOcean.attributes.position);
@@ -119,10 +122,12 @@ function oceanInit(){
 		uniforms: {
 			time: {type: "f", value: 1.0}
 		},
-		wireframe: false
+		wireframe: false,
+		flatShading: true
 	});
 
 	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
+	oceanMesh.receiveShadow = true;
 	console.log(materialOcean);
 
 	//Create branches
@@ -170,11 +175,6 @@ function islandInit(){
 
 
 function render() {
-	
-	// Set up the camera
-	//camera.position.x = 0.5;
-	//camera.position.x = -mouseX*10;
-	//camera.lookAt( scene.position );
 
 	time = clock.getElapsedTime();
 
