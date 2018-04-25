@@ -54,7 +54,8 @@ function init() {
 	camera.position.y = 2;
 	
 	scene = new THREE.Scene();
-	
+
+
 	renderer = new THREE.WebGLRenderer();
 	renderer.setClearColor( 0x340000 );
 	renderer.setPixelRatio( window.devicePixelRatio );
@@ -66,9 +67,31 @@ function init() {
 	
 	oceanInit();
 	islandInit();
+	lightInit();
 		
 	//document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 	window.addEventListener( 'resize', onWindowResize, false );
+
+}
+
+function lightInit(){
+
+	var light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
+	sceneRoot.add( light );
+
+	var spotLight = new THREE.SpotLight( 0xffffff );
+	spotLight.position.set( 50, 100, 100 );
+
+	spotLight.castShadow = true;
+
+	spotLight.shadow.mapSize.width = 1024;
+	spotLight.shadow.mapSize.height = 1024;
+
+	spotLight.shadow.camera.near = 500;
+	spotLight.shadow.camera.far = 4000;
+	spotLight.shadow.camera.fov = 30;
+
+	sceneRoot.add( spotLight );
 
 }
 
@@ -95,11 +118,8 @@ function oceanInit(){
 		fragmentShader: glslify("./shaders/ocean.frag"),
 		uniforms: {
 			time: {type: "f", value: 1.0}
-		},/*
-		defines: {
-			noise: glslify("./node_modules/webgl-noise/src/noise3D.glsl")
-		},*/
-		wireframe: true
+		},
+		wireframe: false
 	});
 
 	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
@@ -115,7 +135,7 @@ function oceanInit(){
 
 function islandInit(){
 	
-	let materialIsland = new THREE.MeshBasicMaterial( {color: 0xffff00, wireframe: true } );
+	let materialIsland = new THREE.MeshBasicMaterial( {color: 0xffff00, wireframe: false } );
 	sceneRoot.add(islandTrans);
 	
 	let manager = new THREE.LoadingManager();
@@ -162,7 +182,7 @@ function render() {
 
 	
 	//perform animations
-	oceanSpin.rotation.x = 3.14/2;
+	oceanSpin.rotation.x = -3.14/2;
 	oceanTrans.position.set(0, 0, 0);
 	
 	islandTrans.position.set(0, 0, 0);
