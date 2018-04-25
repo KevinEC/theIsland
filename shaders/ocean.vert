@@ -12,17 +12,34 @@ void main() {
 
   vUv = uv;
 
+  float maxD = sqrt(900.); // inner circular wave start radius
+  vec3 orig = vec3(0.,0.,0.);
+
+  float dist = distance(position, orig);
+
   // get a 3d noise using the position, low frequency
-  float f = 1.5 * pnoise( 0.2 * position + vec3(0, 0, 2.0 * 1.* time), vec3( 1000.0 ) );
+  float f = 0.5 * pnoise( 0.2 * position + vec3(0, 0, 2.0 * 0.5* time), vec3( 1000.0 ) ); // far noise pattern
   // get a 3d noise using the position, low frequency
-  float g = 1.5 * pnoise( 0.2 * position + vec3(0, 0, 2.0 * 0.5* time), vec3( 1000.0 )) ;
-  // compose both noises
-  float displacement = f + g;
+  float g = 1. * pnoise( 0.1 * position + vec3(0, 0, 2.0 * sin(dist + time)), vec3( 1000.0 )) ; // close noise pattern
+
+
+  float displacement;
+  
+  
+  if (dist <= maxD)
+  {
+  	 // compose both noises
+	 displacement = (dist / maxD)*f + (1.0-dist/maxD)*g; // returns a vector cuz position 
+  }
+  else 
+  {
+  	 displacement = f;
+
+  }
+
+
 
   // move the position along the normal and transform it
-
-
-
   vec3 newPosition = position + normal * displacement;
   gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
 

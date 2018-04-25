@@ -1,6 +1,7 @@
 var THREE = require("three");
 var glslify = require("glslify");
 var OBJLoader = require('three-obj-loader');
+var OrbitControls = require('three-orbit-controls')(THREE);
 OBJLoader(THREE);
 
 /* THREE js code goes here */
@@ -34,22 +35,23 @@ function onWindowResize() {
 	renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
-function onDocumentMouseMove( event ) {
+//function onDocumentMouseMove( event ) {
 
-	if(event.ctrlKey)
-	{ 
+//	if(event.ctrlKey)
+//	{ 
     // mouseX, mouseY are in the range [-1, 1]
-	mouseX = ( event.clientX - windowHalfX ) / windowHalfX;
-	mouseY = ( event.clientY - windowHalfY ) / windowHalfY;
-	}
-}
+//	mouseX = ( event.clientX - windowHalfX ) / windowHalfX;
+//	mouseY = ( event.clientY - windowHalfY ) / windowHalfY;
+//	}
+//}
 
 function init() {
 	
 	container = document.getElementById( 'container' );
 	
-	camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-	camera.position.z = 5;
+	camera = new THREE.PerspectiveCamera( 90, window.innerWidth/window.innerHeight, 0.1, 1000 );
+	let controls = new OrbitControls(camera);
+	camera.position.y = 2;
 	
 	scene = new THREE.Scene();
 	
@@ -65,7 +67,7 @@ function init() {
 	oceanInit();
 	islandInit();
 		
-	document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+	//document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 	window.addEventListener( 'resize', onWindowResize, false );
 
 }
@@ -85,7 +87,7 @@ function oceanInit(){
 
 	*/
 	//Geometries and meshes
-	let geometryOcean = new THREE.PlaneBufferGeometry(60, 60, 60, 60);
+	let geometryOcean = new THREE.PlaneBufferGeometry(90, 90, 90, 90);
 	console.log(geometryOcean.attributes.position);
 
 	let materialOcean = new THREE.ShaderMaterial({
@@ -150,9 +152,9 @@ function islandInit(){
 function render() {
 	
 	// Set up the camera
-	camera.position.x = 0.5;
-	camera.position.x = -mouseX*10;
-	camera.lookAt( scene.position );
+	//camera.position.x = 0.5;
+	//camera.position.x = -mouseX*10;
+	//camera.lookAt( scene.position );
 
 	time = clock.getElapsedTime();
 
@@ -161,9 +163,9 @@ function render() {
 	
 	//perform animations
 	oceanSpin.rotation.x = 3.14/2;
-	oceanTrans.position.set(0, -3, -5);
+	oceanTrans.position.set(0, 0, 0);
 	
-	islandTrans.position.set(0, -3, 5);
+	islandTrans.position.set(0, 0, 0);
 	
 	// Render the scene
 	renderer.render( scene, camera );
