@@ -5,6 +5,9 @@ uniform float time;
 
 varying vec2 vUv;
 varying float noise;
+uniform vec3 light_pos;
+varying vec3 light_direction;
+varying vec3 n_hat;
 
 
 
@@ -37,12 +40,12 @@ void main() {
 
   }
 
-
-
+  light_direction = (-1.0*light_pos)/length(light_pos);
   // move the position along the normal and transform it
   vec3 newPosition = position + normal * displacement;
   gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
-
+  
+  n_hat = normal;
 }
 
 

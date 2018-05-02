@@ -70,9 +70,9 @@ function init() {
 	//Top level node
 	scene.add( sceneRoot );
 	
+	lightInit();
 	oceanInit();
 	islandInit();
-	lightInit();
 		
 	//document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 	window.addEventListener( 'resize', onWindowResize, false );
@@ -84,7 +84,7 @@ function lightInit(){
 	var ambient = new THREE.AmbientLight( 0xffffff, 0.1 );
 	scene.add( ambient );
 
-	var spotLight = new THREE.SpotLight( 0xffffff, 1 );
+	spotLight = new THREE.SpotLight( 0xffffff, 1 );
 	spotLight.position.set( 15, 40, 35 );
 	spotLight.angle = 3.14 / 4;
 	spotLight.penumbra = 0.01;
@@ -114,16 +114,18 @@ function lightInit(){
 function oceanInit(){
 	//Geometries and meshes
 	let geometryOcean = new THREE.PlaneBufferGeometry(90, 90, 90, 90);
-	console.log(geometryOcean.attributes.position);
+
+	//geometryOcean.addAttribute('light_pos', spotLight.position);
+	console.log(geometryOcean);
 
 	let materialOcean = new THREE.ShaderMaterial({
 		vertexShader: glslify("./shaders/ocean.vert"),
 		fragmentShader: glslify("./shaders/ocean.frag"),
 		uniforms: {
-			time: {type: "f", value: 1.0}
+			time: {type: "f", value: 1.0},
+			light_pos: {value: spotLight.position}
 		},
-		wireframe: false,
-		flatShading: true
+		wireframe: false
 	});
 
 	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
