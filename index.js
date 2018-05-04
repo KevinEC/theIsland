@@ -115,7 +115,8 @@ function oceanInit(){
 	//Geometries and meshes
 	let geometryOcean = new THREE.PlaneBufferGeometry(90, 90, 90, 90);
 
-	//geometryOcean.addAttribute('light_pos', spotLight.position);
+	geometryOcean.addAttribute('light_pos', spotLight.position);
+	geometryOcean.attributes.normal.needsUpdate = true;
 	console.log(geometryOcean);
 
 	let materialOcean = new THREE.ShaderMaterial({
