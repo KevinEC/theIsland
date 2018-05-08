@@ -10,7 +10,7 @@ varying vec3 light_direction;
 varying vec3 n_hat;
 varying vec3 position4interpol;
 
-
+uniform vec3 cam_pos;
 
 void main() {
 
@@ -24,7 +24,7 @@ void main() {
   // get a 3d noise using the position, low frequency
   float f = 1.5 * pnoise( 0.2 * position + vec3(0, 0, 2.0 * 0.5* time), vec3( 1000.0 ) ); // far noise pattern
   // get a 3d noise using the position, low frequency
-  float g = 3. * pnoise( 0.1 * position + vec3(0, 0, 2.0 * sin(dist + time)), vec3( 1000.0 )) ; // close noise pattern
+  float g = 1. * pnoise( 0.1 * position + vec3(0, 0, 2.0 * sin(dist + time)), vec3( 1000.0 )) ; // close noise pattern
 
 
   float displacement;

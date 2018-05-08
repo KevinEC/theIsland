@@ -124,7 +124,8 @@ function oceanInit(){
 		fragmentShader: glslify("./shaders/ocean.frag"),
 		uniforms: {
 			time: {type: "f", value: 1.0},
-			light_pos: {value: spotLight.position}
+			light_pos: {value: spotLight.position},
+			cam_pos: {value: camera.position}
 		},
 		wireframe: false
 	});

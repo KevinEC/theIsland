@@ -9,7 +9,7 @@ varying vec3 n_hat;
 
 varying vec3 position4interpol;
 
-
+uniform vec3 cam_pos;
 void main()
 {
 
@@ -19,10 +19,18 @@ void main()
 	vec4 darkColor = vec4(0., 0., 1., 1.);
 	vec4 lightColor = vec4(1., 0., 0., 1.);
 
-	vec3 spec_light = light_direction - 2. * dot(n_hat, light_direction)*n_hat;
+	vec3 spec_light = light_direction - 2. * dot(real_normal, light_direction)*real_normal;
 	//snoise är stegus-noice function.
 	//gl_FragColor = vec4(snoise(time*gl_FragCoord.xy/190.0), 0.9, 1.0, 1.0);
 
-	gl_FragColor = vec4(-1.0*dot(real_normal, light_direction) * vec3(0.0, 0.0, 1.0), 1.);
-    //gl_FragColor = vec4(real_normal, 1.);
+	float k_spec_raw = max(0., dot(normalize(spec_light), normalize(cam_pos)));
+	float k_spec = k_spec_raw*k_spec_raw*k_spec_raw;
+	float k_diff = -1.*dot(real_normal, light_direction);
+
+	vec3 ambientColor =  vec3(0.1, 0.3, 0.3);
+	vec3 diffuseColor =  k_diff * vec3(0.0, 0.0, 0.8);
+	vec3 specularColor = k_spec * vec3(1., 1., 1.);
+
+	gl_FragColor = vec4( diffuseColor + specularColor + ambientColor , 1.);
+    //gl_FragColor = vec4(spec_light, 1.);
 }
