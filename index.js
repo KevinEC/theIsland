@@ -72,12 +72,11 @@ function init() {
 	
 	camera = new THREE.PerspectiveCamera( 90, window.innerWidth/window.innerHeight, 0.1, 1000 );
 	let controls = new OrbitControls(camera);
-	camera.position.y = 20;
-	camera.position.x = 100;
+	camera.position.y = 5;
+	camera.position.x = 90;
 	controls.update();
 	
 	scene = new THREE.Scene();
-
 
 	renderer = new THREE.WebGLRenderer();
 	renderer.setClearColor( 0x340000 );
@@ -106,10 +105,10 @@ function lightInit(){
 	scene.add( ambient );
 
 	spotLight = new THREE.SpotLight( 0xffff00, 3.5, 50 );
-	spotLight.position.set( 0, 100, 60 );
+	spotLight.position.set( 0, 100, 260 );
 	spotLight.angle = 3.14 / 4;
 
-	spotLight.distance = 150;
+	spotLight.distance = 350;
 
 
 
@@ -124,14 +123,15 @@ function lightInit(){
 
 function oceanInit(){
 	//Geometries and meshes
-	let geometryOcean = new THREE.PlaneBufferGeometry(90, 90, 90, 90);
-	let geometryFloor = new THREE.PlaneBufferGeometry(90, 90, 90, 90);
+	let geometryOcean = new THREE.PlaneBufferGeometry(300, 300, 300, 300);
+	let geometryFloor1 = new THREE.PlaneBufferGeometry(300, 300, 300, 300);
+	let geometryFloor2 = new THREE.PlaneBufferGeometry(300, 300, 300, 300);
 
 
 	geometryOcean.addAttribute('light_pos', spotLight.position);
 	geometryOcean.attributes.normal.needsUpdate = true;
-	geometryFloor.addAttribute('light_pos', spotLight.position);
-	geometryFloor.attributes.normal.needsUpdate = true;
+	geometryFloor1.addAttribute('light_pos', spotLight.position);
+	geometryFloor1.attributes.normal.needsUpdate = true;
 
 	let materialOcean = new THREE.ShaderMaterial({
 		vertexShader: glslify("./shaders/ocean.vert"),
@@ -141,12 +141,13 @@ function oceanInit(){
 			light_pos: {value: spotLight.position},
 			cam_pos: {value: camera.position}
 		},
-		wireframe: false
+		wireframe: false,
+		transparent: true
 	});
-	let materialFloor = new THREE.MeshPhongMaterial({color: 0x0080ff});
+	let materialFloor = new THREE.MeshPhongMaterial({color: 0x0080ff, transparent: true});
 
 	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
-	floorMesh = new THREE.Mesh(geometryFloor, materialFloor);
+	floorMesh = new THREE.Mesh(geometryFloor1, materialFloor);
 	console.log(materialFloor);
 	materialFloor.needsUpdate = true;
 
