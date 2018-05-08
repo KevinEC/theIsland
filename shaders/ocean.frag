@@ -23,6 +23,6 @@ void main()
 	//snoise är stegus-noice function.
 	//gl_FragColor = vec4(snoise(time*gl_FragCoord.xy/190.0), 0.9, 1.0, 1.0);
 
-	gl_FragColor = vec4(-1.0*dot(real_normal, light_direction) * vec3(0.0, 0.0, 1.0), 1.);
+	gl_FragColor = vec4(-1.0*dot(real_normal, light_direction) * vec3(0.1, 0.5, 0.5), 1.) + vec4(0., 0.2, 0.5, 1);
     //gl_FragColor = vec4(real_normal, 1.);
 }
