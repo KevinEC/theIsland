@@ -19,6 +19,9 @@ let sceneRoot = new THREE.Group();
 let oceanTrans = new THREE.Group();
 let oceanSpin = new THREE.Group();
 let islandTrans = new THREE.Group();
+let palmTrans = new THREE.Group();
+let palmScale = new THREE.Group();
+
 let floorSpin = new THREE.Group();
 let floorTrans = new THREE.Group();
 let floorMesh;
@@ -75,6 +78,7 @@ function init() {
 	lightInit();
 	oceanInit();
 	islandInit();
+	palmInit();
 		
 	//document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 	window.addEventListener( 'resize', onWindowResize, false );
@@ -160,7 +164,7 @@ function islandInit(){
 	};
 	
 	let loader = new THREE.OBJLoader( manager );
-	loader.load( 'island1.obj' , 
+	loader.load( 'objects/island1.obj' , 
 		
 		function (geometryIsland) {
 		geometryIsland.traverse( function ( child ) {
@@ -184,6 +188,49 @@ function islandInit(){
 	
 }
 
+function palmInit(){
+	
+	let materialPalm = new THREE.MeshBasicMaterial( {color: 0xFF01FF, wireframe: false } );
+	sceneRoot.add(palmTrans);
+	sceneRoot.add(palmScale);
+	
+	let manager_ = new THREE.LoadingManager();
+	manager_.onProgress = function ( item, loaded, total ) {
+		console.log( item, loaded, total );
+	};
+
+//	var mtlLoader = new THREE.MTLLoader();
+//	mtlLoader.setBaseUrl('objects/palmiii');
+//	mtlLoader.setPath('objects/palmiii');
+//	var url = "palmiii.mtl";
+
+//	mtlLoader.load(url, function(materials){});
+	
+	let loader_ = new THREE.OBJLoader( manager_ );
+	loader_.load( 'objects/palmiii.obj' , 
+		
+		function (geometryPalm) {
+		geometryPalm.traverse( function ( child ) {
+			if ( child instanceof THREE.Mesh ) {
+				child.material = materialPalm;
+			}
+		} );
+		palmTrans.add( geometryPalm );
+		palmScale.add( geometryPalm );
+		},
+		function ( xhr ) {
+		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+		},
+		
+		// called when loading has errors
+		function ( error ) {
+
+			console.log( 'An error happened' );
+
+		}
+	);
+	
+}
 
 function render() {
 
@@ -200,6 +247,8 @@ function render() {
 	floorTrans.position.set(0, -4, 0);
 	
 	islandTrans.position.set(0, 0, 0);
+	palmTrans.position.set(0, 0, 0);
+	palmScale.scale.set(0.01,0.01,0.01);
 	
 	// Render the scene
 	renderer.render( scene, camera );
