@@ -1,6 +1,7 @@
 var THREE = require("three");
 var glslify = require("glslify");
 var OBJLoader = require('three-obj-loader');
+var MTLLoader = require('three-mtl-loader');
 var OrbitControls = require('three-orbit-controls')(THREE);
 OBJLoader(THREE);
 
@@ -51,6 +52,19 @@ function onWindowResize() {
 //	mouseY = ( event.clientY - windowHalfY ) / windowHalfY;
 //	}
 //}
+
+var onProgress = function ( xhr ) {
+	/*if (xhr.lenghtComputable){
+		var percentComplete = xhr.loaded / xhr.total * 100;
+		console.log( Math.round( percentComplete, 2) + '% downloaded' );
+	}*/
+	console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+}
+
+var onError = function ( error ) {
+	console.log( 'An error happened' );
+}
+
 
 function init() {
 	
@@ -172,8 +186,8 @@ function islandInit(){
 			}
 		} );
 		islandTrans.add( geometryIsland );
-		},
-		function ( xhr ) {
+		}, onProgress, onError
+		/*function ( xhr ) {
 		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
 		},
 		
@@ -182,7 +196,7 @@ function islandInit(){
 
 			console.log( 'An error happened' );
 
-		}
+		}*/
 	);
 	
 }
@@ -190,6 +204,7 @@ function islandInit(){
 function palmInit(){
 	
 	let materialPalm = new THREE.MeshBasicMaterial( {color: 0xFF01FF, wireframe: false } );
+	
 	sceneRoot.add(palmTrans);
 	sceneRoot.add(palmScale);
 	
@@ -198,15 +213,32 @@ function palmInit(){
 		console.log( item, loaded, total );
 	};
 
-//	var mtlLoader = new THREE.MTLLoader();
-//	mtlLoader.setBaseUrl('objects/palmiii');
-//	mtlLoader.setPath('objects/palmiii');
-//	var url = "palmiii.mtl";
+	var mtlLoader = new MTLLoader();
+	mtlLoader.load('objects/palmiii.mtl', function(palmMaterial) {
+		
+		palmMaterial.preload();
+		
+		let objLoader = new THREE.OBJLoader( manager_ );
+		//objLoader.setMaterials( palmMaterial );
+		objLoader.load( 'objects/palmiii.obj' , 
+		
+			function (geometryPalm) {
+				geometryPalm.traverse( function ( child ) {
+					if ( child instanceof THREE.Mesh ) {
+						//child.material = palmMaterial;
+						child.material = materialPalm;
+					}
+				} );
+				
+				palmTrans.add( geometryPalm );
+				palmScale.add( geometryPalm );
+			
+			}, onProgress, onError);
+	});
 
-//	mtlLoader.load(url, function(materials){});
-	
-	let loader_ = new THREE.OBJLoader( manager_ );
-	loader_.load( 'objects/palmiii.obj' , 
+
+/*	let objLoader = new THREE.OBJLoader( manager_ );
+	objLoader.load( 'objects/palmiii.obj' , 
 		
 		function (geometryPalm) {
 		geometryPalm.traverse( function ( child ) {
@@ -228,7 +260,7 @@ function palmInit(){
 
 		}
 	);
-	
+	*/
 }
 
 function render() {

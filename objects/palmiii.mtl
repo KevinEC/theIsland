@@ -12,6 +12,6 @@ newmtl palme1
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka H:\texture.jpg
-	map_Kd H:\texture.jpg
-	map_d H:\bw.jpg
+	map_Ka objects\texture.jpg
+	map_Kd objects\texture.jpg
+	map_d objects\bw.jpg
