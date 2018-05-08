@@ -1,0 +1,13 @@
+uppåt i hierarkin
+	cd ..\ 
+
+när man ställt sig i rätt mapp
+	npm install
+
+detta ska ta tid...
+	npm run app
+
+av detta får du en fin länk med massa siffror :)
+
+för att stoppa appen 
+	ctrl+C	Y
