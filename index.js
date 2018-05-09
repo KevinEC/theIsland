@@ -54,10 +54,6 @@ function onWindowResize() {
 //}
 
 var onProgress = function ( xhr ) {
-	/*if (xhr.lenghtComputable){
-		var percentComplete = xhr.loaded / xhr.total * 100;
-		console.log( Math.round( percentComplete, 2) + '% downloaded' );
-	}*/
 	console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
 }
 
@@ -188,16 +184,6 @@ function islandInit(){
 		} );
 		islandTrans.add( geometryIsland );
 		}, onProgress, onError
-		/*function ( xhr ) {
-		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-		},
-		
-		// called when loading has errors
-		function ( error ) {
-
-			console.log( 'An error happened' );
-
-		}*/
 	);
 	
 }
@@ -214,54 +200,35 @@ function palmInit(){
 		console.log( item, loaded, total );
 	};
 
-	var mtlLoader = new MTLLoader();
-	mtlLoader.load('objects/palmiii.mtl', function(palmMaterial) {
+	var mtlLoader = new MTLLoader(manager_);
+	
+	mtlLoader.setPath('objects/'); //till mtl-filen
+	mtlLoader.load ('palmiii.mtl', 
+
+		function(palmMaterial) {
 		
-		palmMaterial.preload();
-		
-		let objLoader = new THREE.OBJLoader( manager_ );
-		//objLoader.setMaterials( palmMaterial );
-		objLoader.load( 'objects/palmiii.obj' , 
-		
-			function (geometryPalm) {
-				geometryPalm.traverse( function ( child ) {
-					if ( child instanceof THREE.Mesh ) {
-						//child.material = palmMaterial;
-						child.material = materialPalm;
-					}
-				} );
-				
-				palmTrans.add( geometryPalm );
-				palmScale.add( geometryPalm );
+			palmMaterial.preload();
 			
-			}, onProgress, onError);
-	});
+			//console.log(palmMaterial.getAsArray());
 
-
-/*	let objLoader = new THREE.OBJLoader( manager_ );
-	objLoader.load( 'objects/palmiii.obj' , 
+			let objLoader = new THREE.OBJLoader( manager_ );
+			
+			objLoader.setPath('objects/'); 
+			objLoader.load( 'palmiii.obj' , 
+			
+				function (geometryPalm) {
 		
-		function (geometryPalm) {
-		geometryPalm.traverse( function ( child ) {
-			if ( child instanceof THREE.Mesh ) {
-				child.material = materialPalm;
-			}
-		} );
-		palmTrans.add( geometryPalm );
-		palmScale.add( geometryPalm );
-		},
-		function ( xhr ) {
-		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-		},
-		
-		// called when loading has errors
-		function ( error ) {
-
-			console.log( 'An error happened' );
-
-		}
+					objLoader.setMaterials( palmMaterial );
+					palmTrans.add( geometryPalm );
+					palmScale.add( geometryPalm );
+				
+				}, onProgress, onError
+			);
+			console.log(objLoader);
+		},  onProgress, onError
 	);
-	*/
+ //console.log(mtlLoader);
+
 }
 
 function render() {
