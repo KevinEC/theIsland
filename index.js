@@ -20,9 +20,9 @@ let sceneRoot = new THREE.Group();
 let oceanTrans = new THREE.Group();
 let oceanSpin = new THREE.Group();
 let islandTrans = new THREE.Group();
+let islandScale = new THREE.Group();
 let palmTrans = new THREE.Group();
 let palmScale = new THREE.Group();
-
 let floorSpin = new THREE.Group();
 let floorTrans = new THREE.Group();
 let floorMesh;
@@ -148,7 +148,6 @@ function oceanInit(){
 
 	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
 	floorMesh = new THREE.Mesh(geometryFloor1, materialFloor);
-	console.log(materialFloor);
 	materialFloor.needsUpdate = true;
 
 	//Create ocean branches
@@ -186,7 +185,8 @@ function islandInit(){
 				child.material = materialIsland;
 			}
 		} );
-		islandTrans.add( geometryIsland );
+		islandTrans.add( islandScale );
+		islandScale.add( geometryIsland );
 		}, onProgress, onError
 		/*function ( xhr ) {
 		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
@@ -207,7 +207,7 @@ function palmInit(){
 	let materialPalm = new THREE.MeshBasicMaterial( {color: 0xFF01FF, wireframe: false } );
 	
 	sceneRoot.add(palmTrans);
-	sceneRoot.add(palmScale);
+	palmTrans.add(palmScale);
 	
 	let manager_ = new THREE.LoadingManager();
 	manager_.onProgress = function ( item, loaded, total ) {
@@ -230,8 +230,6 @@ function palmInit(){
 						child.material = materialPalm;
 					}
 				} );
-				
-				palmTrans.add( geometryPalm );
 				palmScale.add( geometryPalm );
 			
 			}, onProgress, onError);
@@ -279,8 +277,10 @@ function render() {
 	floorTrans.position.set(0, -4, 0);
 	
 	islandTrans.position.set(0, 0, 0);
-	palmTrans.position.set(0, 0, 0);
-	palmScale.scale.set(0.01,0.01,0.01);
+	islandScale.scale.set(4.,4.,4.);
+
+	palmTrans.position.set(0, 5., 0);
+	palmScale.scale.set(0.05,0.05,0.05);
 	
 	// Render the scene
 	renderer.render( scene, camera );

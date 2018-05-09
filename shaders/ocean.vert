@@ -16,7 +16,7 @@ void main() {
 
   vUv = uv;
 
-  float maxD = sqrt(900.); // inner circular wave start radius
+  float maxD = sqrt(800.); // inner circular wave start radius
   vec3 orig = vec3(0.,0.,0.);
 
   float dist = distance(position, orig);
