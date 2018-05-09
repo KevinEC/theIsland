@@ -72,7 +72,7 @@ function init() {
 	
 	container = document.getElementById( 'container' );
 	
-	camera = new THREE.PerspectiveCamera( 90, window.innerWidth/window.innerHeight, 0.1, 1000 );
+	camera = new THREE.PerspectiveCamera( 90, window.innerWidth/window.innerHeight, 0.1, 3000 );
 	let controls = new OrbitControls(camera);
 	camera.position.y = 5;
 	camera.position.x = 90;
@@ -104,9 +104,9 @@ function init() {
 
 function skyBoxInit(){
 
-	let geometrySkyBox = new THREE.SphereGeometry(200, 300, 300);
+	let geometrySkyBox = new THREE.SphereGeometry(800, 300, 300);
 
-	let materialSkyBox = new THREE.MeshBasicMaterial({color: 0x0080ff});
+	let materialSkyBox = new THREE.MeshLambertMaterial({color: 0x0080ff});
 
 	materialSkyBox.side = THREE.BackSide;
 
@@ -117,18 +117,20 @@ function skyBoxInit(){
 
 function lightInit(){
 
+	//TESTA DIRECTIONAL LIGHT
+
 	var ambient = new THREE.AmbientLight( 0xffffff  , 0.5 );
 	scene.add( ambient );
 
-	spotLight = new THREE.SpotLight( 0xffff00, 3.5, 50 );
-	spotLight.position.set( 0, 100, 260 );
-	spotLight.angle = 3.14 / 4;
+	spotLight = new THREE.PointLight( 0xffff00, 6.5, 800 );
+	spotLight.position.set( 0, 340, 700 );
+	//spotLight.angle = 3.14 / 3;
 
-	spotLight.distance = 350;
+	spotLight.distance = 1200;
 
 	scene.add( spotLight );
 
-	lightHelper = new THREE.SpotLightHelper( spotLight );
+	lightHelper = new THREE.PointLightHelper( spotLight );
 	scene.add( lightHelper );
 
 
@@ -136,9 +138,9 @@ function lightInit(){
 
 function oceanInit(){
 	//Geometries and meshes
-	let geometryOcean = new THREE.PlaneBufferGeometry(500, 500, 500, 500);
+	let geometryOcean = new THREE.PlaneBufferGeometry(1600, 1600, 1600, 1600);
 
-	let geometryFloor1 = new THREE.PlaneBufferGeometry(500, 500, 500, 500);
+	let geometryFloor1 = new THREE.PlaneBufferGeometry(1600, 1600, 1600, 1600);
 
 
 	geometryOcean.addAttribute('light_pos', spotLight.position);
