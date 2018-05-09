@@ -8,10 +8,13 @@ varying vec3 light_direction;
 varying vec3 n_hat;
 
 varying vec3 position4interpol;
+varying float dist_to_island;
 
 uniform vec3 cam_pos;
 void main()
 {
+
+
 
 	vec3 real_cam_pos = position4interpol - cam_pos;
 	vec3 a_light_direction = vec3(0.0,0.0,-1.0);
@@ -42,6 +45,10 @@ void main()
 	vec3 specularColor = k_spec * vec3(0.9, 0.9, 0.9);
 	vec3 a_specularColor =  a_k_spec * vec3(1.0, 1.0, 1.0);
 
+	//calc transparancy by distance from island
+	float transp = 0.35 + 0.6*dist_to_island;
+
 	gl_FragColor = vec4( diffuseColor + specularColor + a_specularColor + ambientColor , 0.35);
+
     //gl_FragColor = vec4(spec_light, 1.);
 }

@@ -106,7 +106,7 @@ function skyBoxInit(){
 
 	let geometrySkyBox = new THREE.SphereGeometry(200, 300, 300);
 
-	let materialSkyBox = new THREE.MeshLambertMaterial();
+	let materialSkyBox = new THREE.MeshBasicMaterial({color: 0x0080ff});
 
 	materialSkyBox.side = THREE.BackSide;
 
