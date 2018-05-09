@@ -7,6 +7,7 @@ OBJLoader(THREE);
 
 /* THREE js code goes here */
 let container;
+
 let camera, scene, renderer;
 let spotLight, lightHelper, shadowCameraHelper;
 
@@ -20,14 +21,15 @@ let sceneRoot = new THREE.Group();
 let oceanTrans = new THREE.Group();
 let oceanSpin = new THREE.Group();
 let islandTrans = new THREE.Group();
+let islandScale = new THREE.Group();
 let palmTrans = new THREE.Group();
 let palmScale = new THREE.Group();
-
 let floorSpin = new THREE.Group();
 let floorTrans = new THREE.Group();
 let floorMesh;
 let oceanMesh;
 let islandMesh;
+let skyBoxMesh;
 
 let clock = new THREE.Clock();
 
@@ -66,7 +68,7 @@ function init() {
 	
 	container = document.getElementById( 'container' );
 	
-	camera = new THREE.PerspectiveCamera( 90, window.innerWidth/window.innerHeight, 0.1, 1000 );
+	camera = new THREE.PerspectiveCamera( 90, window.innerWidth/window.innerHeight, 0.1, 3000 );
 	let controls = new OrbitControls(camera);
 	camera.position.y = 5;
 	camera.position.x = 90;
@@ -89,29 +91,42 @@ function init() {
 	oceanInit();
 	islandInit();
 	palmInit();
+	skyBoxInit();
 		
 	//document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 	window.addEventListener( 'resize', onWindowResize, false );
 
 }
 
+function skyBoxInit(){
+
+	let geometrySkyBox = new THREE.SphereGeometry(800, 300, 300);
+
+	let materialSkyBox = new THREE.MeshLambertMaterial({color: 0x0080ff});
+
+	materialSkyBox.side = THREE.BackSide;
+
+	skyBoxMesh = new THREE.Mesh(geometrySkyBox, materialSkyBox);
+
+	scene.add(skyBoxMesh);
+}
+
 function lightInit(){
+
+	//TESTA DIRECTIONAL LIGHT
 
 	var ambient = new THREE.AmbientLight( 0xffffff  , 0.5 );
 	scene.add( ambient );
 
-	spotLight = new THREE.SpotLight( 0xffff00, 3.5, 50 );
-	spotLight.position.set( 0, 100, 260 );
-	spotLight.angle = 3.14 / 4;
+	spotLight = new THREE.PointLight( 0xffff00, 6.5, 800 );
+	spotLight.position.set( 0, 340, 700 );
+	//spotLight.angle = 3.14 / 3;
 
-	spotLight.distance = 350;
-
-
-
+	spotLight.distance = 1200;
 
 	scene.add( spotLight );
 
-	lightHelper = new THREE.SpotLightHelper( spotLight );
+	lightHelper = new THREE.PointLightHelper( spotLight );
 	scene.add( lightHelper );
 
 
@@ -119,15 +134,13 @@ function lightInit(){
 
 function oceanInit(){
 	//Geometries and meshes
-	let geometryOcean = new THREE.PlaneBufferGeometry(300, 300, 300, 300);
-	let geometryFloor1 = new THREE.PlaneBufferGeometry(300, 300, 300, 300);
-	let geometryFloor2 = new THREE.PlaneBufferGeometry(300, 300, 300, 300);
+	let geometryOcean = new THREE.PlaneBufferGeometry(1600, 1600, 1600, 1600);
+
+	let geometryFloor1 = new THREE.PlaneBufferGeometry(1600, 1600, 1600, 1600);
 
 
 	geometryOcean.addAttribute('light_pos', spotLight.position);
 	geometryOcean.attributes.normal.needsUpdate = true;
-	geometryFloor1.addAttribute('light_pos', spotLight.position);
-	geometryFloor1.attributes.normal.needsUpdate = true;
 
 	let materialOcean = new THREE.ShaderMaterial({
 		vertexShader: glslify("./shaders/ocean.vert"),
@@ -140,11 +153,10 @@ function oceanInit(){
 		wireframe: false,
 		transparent: true
 	});
-	let materialFloor = new THREE.MeshPhongMaterial({color: 0x0080ff, transparent: true});
+	let materialFloor = new THREE.MeshPhongMaterial({color: 0x0080ff, transparent: true, opacity: 0.8});
 
 	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
 	floorMesh = new THREE.Mesh(geometryFloor1, materialFloor);
-	console.log(materialFloor);
 	materialFloor.needsUpdate = true;
 
 	//Create ocean branches
@@ -155,10 +167,7 @@ function oceanInit(){
 	//Create floor branches
 	sceneRoot.add( floorTrans );
 	floorTrans.add( floorSpin );
-	floorSpin.add (floorMesh );
-
-
-	
+	floorSpin.add (floorMesh );	
 }
 
 function islandInit(){
@@ -182,7 +191,8 @@ function islandInit(){
 				child.material = materialIsland;
 			}
 		} );
-		islandTrans.add( geometryIsland );
+		islandTrans.add( islandScale );
+		islandScale.add( geometryIsland );
 		}, onProgress, onError
 	);
 	
@@ -193,7 +203,7 @@ function palmInit(){
 	let materialPalm = new THREE.MeshBasicMaterial( {color: 0xFF01FF, wireframe: false } );
 	
 	sceneRoot.add(palmTrans);
-	sceneRoot.add(palmScale);
+	palmTrans.add(palmScale);
 	
 	let manager_ = new THREE.LoadingManager();
 	manager_.onProgress = function ( item, loaded, total ) {
@@ -207,7 +217,18 @@ function palmInit(){
 
 		function(palmMaterial) {
 		
+<<<<<<< HEAD
 			palmMaterial.preload();
+=======
+			function (geometryPalm) {
+				geometryPalm.traverse( function ( child ) {
+					if ( child instanceof THREE.Mesh ) {
+						//child.material = palmMaterial;
+						child.material = materialPalm;
+					}
+				} );
+				palmScale.add( geometryPalm );
+>>>>>>> 078c8485249efa40c882cd23ce007393e662f158
 			
 			//console.log(palmMaterial.getAsArray());
 
@@ -246,8 +267,10 @@ function render() {
 	floorTrans.position.set(0, -4, 0);
 	
 	islandTrans.position.set(0, 0, 0);
-	palmTrans.position.set(0, 0, 0);
-	palmScale.scale.set(0.01,0.01,0.01);
+	islandScale.scale.set(4.,4.,4.);
+
+	palmTrans.position.set(0, 5., 0);
+	palmScale.scale.set(0.05,0.05,0.05);
 	
 	// Render the scene
 	renderer.render( scene, camera );
