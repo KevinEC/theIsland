@@ -7,6 +7,7 @@ OBJLoader(THREE);
 
 /* THREE js code goes here */
 let container;
+
 let camera, scene, renderer;
 let spotLight, lightHelper, shadowCameraHelper;
 
@@ -28,6 +29,7 @@ let floorTrans = new THREE.Group();
 let floorMesh;
 let oceanMesh;
 let islandMesh;
+let skyBoxMesh;
 
 let clock = new THREE.Clock();
 
@@ -93,10 +95,24 @@ function init() {
 	oceanInit();
 	islandInit();
 	palmInit();
+	skyBoxInit();
 		
 	//document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 	window.addEventListener( 'resize', onWindowResize, false );
 
+}
+
+function skyBoxInit(){
+
+	let geometrySkyBox = new THREE.SphereGeometry(200, 300, 300);
+
+	let materialSkyBox = new THREE.MeshBasicMaterial({color: 0x0080ff});
+
+	materialSkyBox.side = THREE.BackSide;
+
+	skyBoxMesh = new THREE.Mesh(geometrySkyBox, materialSkyBox);
+
+	scene.add(skyBoxMesh);
 }
 
 function lightInit(){
@@ -110,9 +126,6 @@ function lightInit(){
 
 	spotLight.distance = 350;
 
-
-
-
 	scene.add( spotLight );
 
 	lightHelper = new THREE.SpotLightHelper( spotLight );
@@ -123,9 +136,8 @@ function lightInit(){
 
 function oceanInit(){
 	//Geometries and meshes
-	let geometryOcean = new THREE.PlaneBufferGeometry(300, 300, 300, 300);
-	let geometryFloor1 = new THREE.PlaneBufferGeometry(300, 300, 300, 300);
-	let geometryFloor2 = new THREE.PlaneBufferGeometry(300, 300, 300, 300);
+	let geometryOcean = new THREE.PlaneBufferGeometry(500, 500, 500, 500);
+	let geometryFloor1 = new THREE.PlaneBufferGeometry(500, 500, 500, 500);
 
 
 	geometryOcean.addAttribute('light_pos', spotLight.position);
