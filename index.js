@@ -137,13 +137,12 @@ function lightInit(){
 function oceanInit(){
 	//Geometries and meshes
 	let geometryOcean = new THREE.PlaneBufferGeometry(500, 500, 500, 500);
+
 	let geometryFloor1 = new THREE.PlaneBufferGeometry(500, 500, 500, 500);
 
 
 	geometryOcean.addAttribute('light_pos', spotLight.position);
 	geometryOcean.attributes.normal.needsUpdate = true;
-	geometryFloor1.addAttribute('light_pos', spotLight.position);
-	geometryFloor1.attributes.normal.needsUpdate = true;
 
 	let materialOcean = new THREE.ShaderMaterial({
 		vertexShader: glslify("./shaders/ocean.vert"),
@@ -156,7 +155,7 @@ function oceanInit(){
 		wireframe: false,
 		transparent: true
 	});
-	let materialFloor = new THREE.MeshPhongMaterial({color: 0x0080ff, transparent: true});
+	let materialFloor = new THREE.MeshPhongMaterial({color: 0x0080ff, transparent: true, opacity: 0.8});
 
 	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
 	floorMesh = new THREE.Mesh(geometryFloor1, materialFloor);
@@ -171,10 +170,7 @@ function oceanInit(){
 	//Create floor branches
 	sceneRoot.add( floorTrans );
 	floorTrans.add( floorSpin );
-	floorSpin.add (floorMesh );
-
-
-	
+	floorSpin.add (floorMesh );	
 }
 
 function islandInit(){
