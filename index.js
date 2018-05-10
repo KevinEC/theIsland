@@ -199,44 +199,57 @@ function islandInit(){
 }
 
 function palmInit(){
+
+	//bool to make sure object is loaded before texture
+	let objectLoaded = false;
 	
 	//let materialPalm = new THREE.MeshBasicMaterial( {color: 0xFF01FF, wireframe: false } );
 	
 	sceneRoot.add(palmTrans);
-	palmTrans.add(palmScale);
 	
 	let manager_ = new THREE.LoadingManager();
 	manager_.onProgress = function ( item, loaded, total ) {
 		console.log( item, loaded, total );
 	};
 
-	var mtlLoader = new MTLLoader(manager_);
-	
-	mtlLoader.setPath('objects/'); //till mtl-filen
-	mtlLoader.load ('palmiii.mtl', 
 
-		function(palmMaterial) {
-
-			palmMaterial.preload();
-			
-			//console.log(palmMaterial.getAsArray());
-
-			let objLoader = new THREE.OBJLoader( manager_ );
-			
-			objLoader.setPath('objects/'); 
-			objLoader.load( 'palmiii.obj' , 
-			
-				function (geometryPalm) {
+	var mtlLoader = new MTLLoader();
 		
-					objLoader.setMaterials( palmMaterial );
-					palmTrans.add( geometryPalm );
-					palmScale.add( geometryPalm );
+		mtlLoader.setPath('objects/'); //till mtl-filen
+		mtlLoader.load ('palme1.mtl', 
+
+			function(palmMaterial) {
+
+				palmMaterial.preload();
+
+				console.log( palmMaterial );
 				
-				}, onProgress, onError
-			);
-			console.log(objLoader);
-		},  onProgress, onError
-	);
+				var objLoader = new THREE.OBJLoader(  );
+				
+				//objLoader.setMaterials( palmMaterial );
+				objLoader.setPath('objects/'); 
+				objLoader.load( 'palmiii.obj' , 
+				
+					function (geometryPalm) {
+						//console.log(palmMaterial.materials.palme1);
+						palmTrans.add( palmScale );
+						palmScale.add( geometryPalm);
+
+						//objLoader.setMaterials( palmMaterial.materials.palme1 );
+						// set map
+						//geometryPalm.children[0].material = palmMaterial.materials.palme1;
+
+
+						console.log(geometryPalm.children[0].material);
+
+					}, onProgress, onError
+				);
+				
+			},  onProgress, onError
+		);
+		
+	
+	
  //console.log(mtlLoader);
 
 }
