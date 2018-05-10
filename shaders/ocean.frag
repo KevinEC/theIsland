@@ -46,9 +46,9 @@ void main()
 	vec3 a_specularColor =  a_k_spec * vec3(1.0, 1.0, 1.0);
 
 	//calc transparancy by distance from island
-	float transp = 0.35 + dist_to_island - 0.35;
+	float transp = 0.35 + 0.65 * dist_to_island;
 
-	gl_FragColor = vec4( diffuseColor + specularColor + a_specularColor + ambientColor , 0.35);
+	gl_FragColor = vec4(ambientColor +  diffuseColor + specularColor + a_specularColor , transp);
 
     //gl_FragColor = vec4(spec_light, 1.);
 }
