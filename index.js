@@ -9,7 +9,7 @@ OBJLoader(THREE);
 let container;
 
 let camera, scene, renderer;
-let spotLight, lightHelper, shadowCameraHelper;
+let pointLight, lightHelper, shadowCameraHelper;
 
 let mouseX = 0, mouseY = 0;
 
@@ -100,15 +100,24 @@ function init() {
 
 function skyBoxInit(){
 
-	let geometrySkyBox = new THREE.SphereGeometry(800, 300, 300);
+	let geometrySkyBox = new THREE.SphereBufferGeometry(800, 300, 300);
 
-	let materialSkyBox = new THREE.MeshLambertMaterial({color: 0x0080ff});
+	geometrySkyBox.addAttribute('light_pos', pointLight.position);
+	geometrySkyBox.attributes.normal.needsUpdate = true;
 
-	materialSkyBox.side = THREE.BackSide;
+	let materialSkyBox =  new THREE.ShaderMaterial({
+		vertexShader: glslify("./shaders/sky.vert"),
+		fragmentShader: glslify("./shaders/sky.frag"),
+		uniforms: {
+			light_pos: {value: pointLight.position}
+		},
+		wireframe: false,
+		side: THREE.BackSide
+	});
 
 	skyBoxMesh = new THREE.Mesh(geometrySkyBox, materialSkyBox);
 
-	scene.add(skyBoxMesh);
+	sceneRoot.add(skyBoxMesh);
 }
 
 function lightInit(){
@@ -116,18 +125,25 @@ function lightInit(){
 	//TESTA DIRECTIONAL LIGHT
 
 	var ambient = new THREE.AmbientLight( 0xffffff  , 0.5 );
-	scene.add( ambient );
+	sceneRoot.add( ambient );
 
-	spotLight = new THREE.PointLight( 0xff9000, 6.5, 800 );
-	spotLight.position.set( 0, 340, 700 );
+	pointLight = new THREE.PointLight( 0xffffff, 1. , 800);
+	r_pointLight = new THREE.PointLight( 0xff0000, 2., 400 );
+	g_pointLight = new THREE.PointLight( 0x00ff00, 1., 200 );
+
+	pointLight.position.set( 0, 340, 700 );
+	r_pointLight.position.set(0, 340, 650 );
+	g_pointLight.position.set(0, 340, 650 );
 	//spotLight.angle = 3.14 / 3;
 
-	spotLight.distance = 1200;
+	//directionalLight.distance = 0;
 
-	scene.add( spotLight );
+	sceneRoot.add( pointLight );
+	sceneRoot.add( r_pointLight );
+	sceneRoot.add( g_pointLight );
 
-	lightHelper = new THREE.PointLightHelper( spotLight );
-	scene.add( lightHelper );
+	lightHelper = new THREE.PointLightHelper( pointLight );
+	sceneRoot.add( lightHelper );
 
 
 }
@@ -139,7 +155,7 @@ function oceanInit(){
 	let geometryFloor1 = new THREE.PlaneBufferGeometry(1600, 1600, 1600, 1600);
 
 
-	geometryOcean.addAttribute('light_pos', spotLight.position);
+	geometryOcean.addAttribute('light_pos', pointLight.position);
 	geometryOcean.attributes.normal.needsUpdate = true;
 
 	let materialOcean = new THREE.ShaderMaterial({
@@ -147,7 +163,7 @@ function oceanInit(){
 		fragmentShader: glslify("./shaders/ocean.frag"),
 		uniforms: {
 			time: {type: "f", value: 1.0},
-			light_pos: {value: spotLight.position},
+			light_pos: {value: pointLight.position},
 			cam_pos: {value: camera.position}
 		},
 		wireframe: false,
