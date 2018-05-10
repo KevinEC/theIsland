@@ -118,7 +118,7 @@ function lightInit(){
 	var ambient = new THREE.AmbientLight( 0xffffff  , 0.5 );
 	scene.add( ambient );
 
-	spotLight = new THREE.PointLight( 0xffff00, 6.5, 800 );
+	spotLight = new THREE.PointLight( 0xff9000, 6.5, 800 );
 	spotLight.position.set( 0, 340, 700 );
 	//spotLight.angle = 3.14 / 3;
 
@@ -200,7 +200,7 @@ function islandInit(){
 
 function palmInit(){
 	
-	let materialPalm = new THREE.MeshBasicMaterial( {color: 0xFF01FF, wireframe: false } );
+	//let materialPalm = new THREE.MeshBasicMaterial( {color: 0xFF01FF, wireframe: false } );
 	
 	sceneRoot.add(palmTrans);
 	palmTrans.add(palmScale);
@@ -216,19 +216,8 @@ function palmInit(){
 	mtlLoader.load ('palmiii.mtl', 
 
 		function(palmMaterial) {
-		
-<<<<<<< HEAD
+
 			palmMaterial.preload();
-=======
-			function (geometryPalm) {
-				geometryPalm.traverse( function ( child ) {
-					if ( child instanceof THREE.Mesh ) {
-						//child.material = palmMaterial;
-						child.material = materialPalm;
-					}
-				} );
-				palmScale.add( geometryPalm );
->>>>>>> 078c8485249efa40c882cd23ce007393e662f158
 			
 			//console.log(palmMaterial.getAsArray());
 
