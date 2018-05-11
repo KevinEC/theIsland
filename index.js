@@ -116,23 +116,23 @@ function lightInit(){
 
 	//TESTA DIRECTIONAL LIGHT
 
-	var ambient = new THREE.AmbientLight( 0xffffff  , 0.5 );
+	var ambient = new THREE.AmbientLight( 0xffffff  , 0.3 );
 	sceneRoot.add( ambient );
 
-	pointLight = new THREE.PointLight( 0xffffff, 1. , 800);
+	pointLight = new THREE.PointLight( 0xffff00, 10., 800);
 	r_pointLight = new THREE.PointLight( 0xff0000, 2., 400 );
 	g_pointLight = new THREE.PointLight( 0x00ff00, 1., 200 );
 
-	pointLight.position.set( 0, 340, 700 );
-	r_pointLight.position.set(0, 340, 650 );
-	g_pointLight.position.set(0, 340, 650 );
+	pointLight.position.set( 0, 220, 800 );
+	r_pointLight.position.set(0, 220, 650 );
+	g_pointLight.position.set(0, 220, 650 );
 	//spotLight.angle = 3.14 / 3;
 
 	//directionalLight.distance = 0;
 
 	sceneRoot.add( pointLight );
-	sceneRoot.add( r_pointLight );
-	sceneRoot.add( g_pointLight );
+	//sceneRoot.add( r_pointLight );
+	//sceneRoot.add( g_pointLight );
 
 	lightHelper = new THREE.PointLightHelper( pointLight );
 	sceneRoot.add( lightHelper );
