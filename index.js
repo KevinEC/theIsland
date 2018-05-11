@@ -1,9 +1,8 @@
 var THREE = require("three");
 var glslify = require("glslify");
-var OBJLoader = require('three-obj-loader');
-var MTLLoader = require('three-mtl-loader');
+var OBJLoader = require('three-obj-loader')(THREE);
 var OrbitControls = require('three-orbit-controls')(THREE);
-OBJLoader(THREE);
+
 
 /* THREE js code goes here */
 let container;
@@ -22,8 +21,6 @@ let oceanTrans = new THREE.Group();
 let oceanSpin = new THREE.Group();
 let islandTrans = new THREE.Group();
 let islandScale = new THREE.Group();
-let palmTrans = new THREE.Group();
-let palmScale = new THREE.Group();
 let floorSpin = new THREE.Group();
 let floorTrans = new THREE.Group();
 let floorMesh;
@@ -54,10 +51,6 @@ function onWindowResize() {
 //	mouseY = ( event.clientY - windowHalfY ) / windowHalfY;
 //	}
 //}
-
-var onProgress = function ( xhr ) {
-	console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-}
 
 var onError = function ( error ) {
 	console.log( 'An error happened' );
@@ -90,7 +83,6 @@ function init() {
 	lightInit();
 	oceanInit();
 	islandInit();
-	palmInit();
 	skyBoxInit();
 		
 	//document.addEventListener( 'mousemove', onDocumentMouseMove, false );
@@ -209,14 +201,41 @@ function islandInit(){
 		} );
 		islandTrans.add( islandScale );
 		islandScale.add( geometryIsland );
-		}, onProgress, onError
-	);
-	
+		},  function ( xhr ) {
+				console.log( ( 'Island:' + xhr.loaded / xhr.total * 100 ) + '% loaded' );
+			}, onError
+	);	
 }
 
-function palmInit(){
+function render() {
 
-	//bool to make sure object is loaded before texture
+	time = clock.getElapsedTime();
+
+	oceanMesh.material.uniforms.time.value = time;
+
+	
+	//perform animations
+	oceanSpin.rotation.x = -3.14/2;
+	oceanTrans.position.set(0, 0, 0);
+
+	floorSpin.rotation.x = -3.14/2;
+	floorTrans.position.set(0, -4, 0);
+	
+	islandTrans.position.set(0, 0, 0);
+	islandScale.scale.set(4.,4.,4.);
+	
+	// Render the scene
+	renderer.render( scene, camera );
+}
+
+function animate () {
+	requestAnimationFrame( animate );
+	render();
+}
+
+init();
+animate();
+/*	//bool to make sure object is loaded before texture
 	let objectLoaded = false;
 	
 	//let materialPalm = new THREE.MeshBasicMaterial( {color: 0xFF01FF, wireframe: false } );
@@ -267,37 +286,4 @@ function palmInit(){
 	
 	
  //console.log(mtlLoader);
-
-}
-
-function render() {
-
-	time = clock.getElapsedTime();
-
-	oceanMesh.material.uniforms.time.value = time;
-
-	
-	//perform animations
-	oceanSpin.rotation.x = -3.14/2;
-	oceanTrans.position.set(0, 0, 0);
-
-	floorSpin.rotation.x = -3.14/2;
-	floorTrans.position.set(0, -4, 0);
-	
-	islandTrans.position.set(0, 0, 0);
-	islandScale.scale.set(4.,4.,4.);
-
-	palmTrans.position.set(0, 5., 0);
-	palmScale.scale.set(0.05,0.05,0.05);
-	
-	// Render the scene
-	renderer.render( scene, camera );
-}
-
-function animate () {
-	requestAnimationFrame( animate );
-	render();
-}
-
-init();
-animate();
+*/
