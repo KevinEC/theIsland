@@ -22,9 +22,6 @@ void main()
 	vec3 real_normal = normalize(cross(dFdx(position4interpol), dFdy(position4interpol)));
 	float maxZ = 2.;
 
-	vec4 darkColor = vec4(0., 0., 1., 1.);
-	vec4 lightColor = vec4(1., 0., 0., 1.);
-
 	vec3 spec_light = light_direction - 2. * dot(real_normal, light_direction)*real_normal;
 	vec3 a_spec_light = a_light_direction - 2. * dot(real_normal, a_light_direction)*real_normal;
 
@@ -40,13 +37,13 @@ void main()
 
 	float k_diff = -1.*dot(real_normal, light_direction);
 
-	vec3 ambientColor =  vec3(0.1, 0.3, 0.3);
-	vec3 diffuseColor =  k_diff * vec3(0.0, 0.0, 0.8);
-	vec3 specularColor = k_spec * vec3(0.9, 0.9, 0.9);
-	vec3 a_specularColor =  a_k_spec * vec3(1.0, 1.0, 1.0);
+	vec3 ambientColor =  vec3(0.0, 0.1, 0.2);
+	vec3 diffuseColor =  k_diff * vec3(0., 0.2, 0.4);
+	vec3 specularColor = k_spec * vec3(1., 1., 1.0);
+	vec3 a_specularColor =  a_k_spec * vec3(.8, 0.8, 0.8);
 
 	//calc transparancy by distance from island
-	float transp = 0.35 + 0.65 * dist_to_island;
+	float transp = 0.35 ;
 
 	gl_FragColor = vec4(ambientColor +  diffuseColor + specularColor + a_specularColor , transp);
 
