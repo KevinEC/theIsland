@@ -213,9 +213,15 @@ function islandInit(){
 }
 
  function palmInit(){
-	sceneRoot.add(palmTrans);
+	
 	
 	let materialPalm = new THREE.MeshLambertMaterial( {color: 0x80ff80, wireframe: false,overdraw: 0.5 } );
+	materialPalm.flatShading = true;
+	materialPalm.lights = true;
+	
+	
+	sceneRoot.add(palmTrans);
+	
 	var mtlLoader = new MTLLoader();
 		
 		mtlLoader.setPath('objects/'); //till mtl-filen
@@ -227,7 +233,7 @@ function islandInit(){
 
 				//console.log( palmMaterial );
 				
-				var objLoader = new THREE.OBJLoader(  );
+				var objLoader = new THREE.OBJLoader();
 
 				//objLoader.setMaterials( palmMaterial );
 				objLoader.setPath('objects/'); 
@@ -240,18 +246,17 @@ function islandInit(){
 							}
 						} );
 						//console.log(palmMaterial.materials.palme1);
+						console.log(geometryPalm.children[0]);
 						palmTrans.add( palmScale );
-						palmScale.add( geometryPalm );
+						palmScale.add( geometryPalm.children[0] );
 
 						//objLoader.setMaterials( palmMaterial.materials.palme1 );
 						// set map
 						//geometryPalm.children[0].material = palmMaterial.materials.palme1;
-
-
 						//console.log(geometryPalm.children[0].material);
 
 					}, function ( xhr ) {
-						console.log( ( 'Palm-obj:' + xhr.loaded / xhr.total * 100 ) + '% loaded' );
+							console.log( ( 'Palm-obj:' + xhr.loaded / xhr.total * 100 ) + '% loaded' );
 						}, onError
 				);
 				
@@ -280,7 +285,7 @@ function render() {
 	islandScale.scale.set(4.,4.,4.);
 	
 	palmTrans.position.set(0, 0, 0);
-	palmScale.scale.set(0.01,0.01,0.01);
+	palmScale.scale.set(0.1,0.1,0.1);
 	
 	// Render the scene
 	renderer.render( scene, camera );
@@ -293,6 +298,9 @@ function animate () {
 
 init();
 animate();
+
+
+
 /*	//bool to make sure object is loaded before texture
 	let objectLoaded = false;
 	
