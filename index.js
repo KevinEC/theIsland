@@ -1,6 +1,7 @@
 var THREE = require("three");
 var glslify = require("glslify");
 var OBJLoader = require('three-obj-loader')(THREE);
+var MTLLoader = require('three-mtl-loader');
 var OrbitControls = require('three-orbit-controls')(THREE);
 
 
@@ -21,6 +22,8 @@ let oceanTrans = new THREE.Group();
 let oceanSpin = new THREE.Group();
 let islandTrans = new THREE.Group();
 let islandScale = new THREE.Group();
+let palmTrans = new THREE.Group();
+let palmScale = new THREE.Group();
 let floorSpin = new THREE.Group();
 let floorTrans = new THREE.Group();
 let floorMesh;
@@ -31,6 +34,7 @@ let skyBoxMesh;
 let clock = new THREE.Clock();
 
 //console.log(glslify("./node_modules/webgl-noise/src/noise3D.glsl"));
+
 
 function onWindowResize() {
 	windowHalfX = window.innerWidth / 2;
@@ -83,6 +87,7 @@ function init() {
 	lightInit();
 	oceanInit();
 	islandInit();
+	palmInit();
 	skyBoxInit();
 		
 	//document.addEventListener( 'mousemove', onDocumentMouseMove, false );
@@ -207,6 +212,56 @@ function islandInit(){
 	);	
 }
 
+ function palmInit(){
+	sceneRoot.add(palmTrans);
+	
+	let materialPalm = new THREE.MeshLambertMaterial( {color: 0x80ff80, wireframe: false,overdraw: 0.5 } );
+	var mtlLoader = new MTLLoader();
+		
+		mtlLoader.setPath('objects/'); //till mtl-filen
+		mtlLoader.load ('palme1.mtl', 
+
+			function(palmMaterial) {
+
+				palmMaterial.preload();
+
+				//console.log( palmMaterial );
+				
+				var objLoader = new THREE.OBJLoader(  );
+
+				//objLoader.setMaterials( palmMaterial );
+				objLoader.setPath('objects/'); 
+				objLoader.load( 'palmiii.obj' , 
+				
+					function (geometryPalm) {
+						geometryPalm.traverse( function ( child ) {
+							if ( child instanceof THREE.Mesh ) {
+								child.material = materialPalm;
+							}
+						} );
+						//console.log(palmMaterial.materials.palme1);
+						palmTrans.add( palmScale );
+						palmScale.add( geometryPalm );
+
+						//objLoader.setMaterials( palmMaterial.materials.palme1 );
+						// set map
+						//geometryPalm.children[0].material = palmMaterial.materials.palme1;
+
+
+						//console.log(geometryPalm.children[0].material);
+
+					}, function ( xhr ) {
+						console.log( ( 'Palm-obj:' + xhr.loaded / xhr.total * 100 ) + '% loaded' );
+						}, onError
+				);
+				
+			},  function ( xhr ) {
+					console.log( ( 'Palm-mat:' + xhr.loaded / xhr.total * 100 ) + '% loaded' );
+				}, onError
+		);
+ 
+ }
+
 function render() {
 
 	time = clock.getElapsedTime();
@@ -223,6 +278,9 @@ function render() {
 	
 	islandTrans.position.set(0, 0, 0);
 	islandScale.scale.set(4.,4.,4.);
+	
+	palmTrans.position.set(0, 0, 0);
+	palmScale.scale.set(0.01,0.01,0.01);
 	
 	// Render the scene
 	renderer.render( scene, camera );
