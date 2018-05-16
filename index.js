@@ -189,13 +189,8 @@ function islandInit(){
 	materialIsland.flatShading = true;
 	materialIsland.lights = true;
 	sceneRoot.add(islandTrans);
-	
-	let manager = new THREE.LoadingManager();
-	manager.onProgress = function ( item, loaded, total ) {
-		console.log( item, loaded, total );
-	};
-	
-	let loader = new THREE.OBJLoader( manager );
+
+	let loader = new THREE.OBJLoader( );
 	loader.load( 'objects/island1.obj' , 
 		
 		function (geometryIsland) {
@@ -230,8 +225,6 @@ function islandInit(){
 			function(palmMaterial) {
 
 				palmMaterial.preload();
-
-				//console.log( palmMaterial );
 				
 				var objLoader = new THREE.OBJLoader();
 
@@ -242,15 +235,16 @@ function islandInit(){
 					function (geometryPalm) {
 						geometryPalm.traverse( function ( child ) {
 							if ( child instanceof THREE.Mesh ) {
-								child.material = materialPalm;
+								//child.material = materialPalm;
+								//child.material = palmMaterial;
 							}
 						} );
 						//console.log(palmMaterial.materials.palme1);
-						console.log(geometryPalm.children[0]);
+						
 						palmTrans.add( palmScale );
 						palmScale.add( geometryPalm.children[0] );
 
-						//objLoader.setMaterials( palmMaterial.materials.palme1 );
+						objLoader.setMaterials( palmMaterial.materials.palme1 );
 						// set map
 						//geometryPalm.children[0].material = palmMaterial.materials.palme1;
 						//console.log(geometryPalm.children[0].material);
