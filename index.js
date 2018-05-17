@@ -201,7 +201,7 @@ function islandInit(){
 	islandSphereMesh = new THREE.Mesh(geometrySphereIsland, materialSphereIsland);
 
 	let loader = new THREE.OBJLoader( );
-	loader.load( 'objects/island1.obj' , 
+	loader.load( 'objects/island.obj' , 
 		
 		function (geometryIsland) {
 		geometryIsland.traverse( function ( child ) {
@@ -269,12 +269,12 @@ function render() {
 	floorSpin.rotation.x = -3.14/2;
 	floorTrans.position.set(0, -2.5, 0);
 	
-	islandTrans.position.set(0, 0, 0);
-	islandScale.scale.set(4.,4.,4.);
+	islandTrans.position.set(0, 2, 0);
+	islandScale.scale.set(0.5,0.5,0.5);
 	
 	islandSphereTrans.position.set(0, -75, 0);
 
-	palmTrans.position.set(0, 6, 0);
+	palmTrans.position.set(-15, 6, 0);
 	palmScale.scale.set(0.19,0.19,0.19);
 	
 	// Render the scene
