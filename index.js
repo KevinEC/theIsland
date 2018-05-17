@@ -227,16 +227,16 @@ function islandInit(){
 
 	let mtlLoader = new MTLLoader()
 	mtlLoader.setPath( 'objects/' )
-	mtlLoader.load( 'palme.mtl', 
+	mtlLoader.load( 'palm.mtl', 
 		function ( materials ) {
 
 			materials.preload();
 			
 			let objLoader = new THREE.OBJLoader();
-			materials.materials.palme1.transparent = true;
-			materials.materials.palme1.side = THREE.DoubleSide;
-			materials.materials.palme1.alphaMap = alphaMapPic;
-			materials.materials.palme1.depthTest = false;
+			materials.materials.palme.transparent = true;
+			materials.materials.palme.side = THREE.DoubleSide;
+			materials.materials.palme.alphaMap = alphaMapPic;
+			materials.materials.palme.depthTest = false;
 
 			console.log(materials);
 
@@ -274,8 +274,8 @@ function render() {
 	
 	islandSphereTrans.position.set(0, -75, 0);
 
-	palmTrans.position.set(0, 0, 0);
-	palmScale.scale.set(0.1,0.1,0.1);
+	palmTrans.position.set(0, 6, 0);
+	palmScale.scale.set(0.19,0.19,0.19);
 	
 	// Render the scene
 	renderer.render( scene, camera );

@@ -12,6 +12,6 @@ newmtl palme
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka H:\TNM061 - projekt\texture full tree.jpg
-	map_Kd H:\TNM061 - projekt\texture full tree.jpg
-	map_d H:\TNM061 - projekt\bw - opacity map.jpg
+	map_Ka texture full tree.jpg
+	map_Kd texture full tree.jpg
+	map_d bw - opacity map.jpg
