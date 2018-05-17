@@ -125,6 +125,7 @@ function lightInit(){
 	sceneRoot.add( ambient );
 
 	pointLight = new THREE.PointLight( 0xff0000, 20., 800, 1.);
+
 	r_pointLight = new THREE.PointLight( 0xff0000, 2., 400 );
 	g_pointLight = new THREE.PointLight( 0x00ff00, 1., 200 );
 

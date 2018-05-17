@@ -4,6 +4,7 @@ varying vec2 vUv;
 uniform vec3 light_pos;
 varying float dist;
 varying float circumference;
+varying vec3 posInterpolL;
 
 void main() 
 {
@@ -12,5 +13,7 @@ void main()
   dist = distance(position, light_pos);
   
   circumference = radius * 2.;
+
+  posInterpolL = position;
   gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 }

@@ -32,20 +32,20 @@ void main()
 	float k_spec = k_spec_raw*k_spec_raw*k_spec_raw;
 
 	//specular from ambient light FUNKAR INTE
-	float a_k_spec_raw = max(0., dot(normalize(a_spec_light), normalize(real_cam_pos)));
-	float a_k_spec = a_k_spec_raw*a_k_spec_raw*a_k_spec_raw;
+	//float a_k_spec_raw = max(0., dot(normalize(a_spec_light), normalize(real_cam_pos)));
+	//float a_k_spec = a_k_spec_raw*a_k_spec_raw*a_k_spec_raw;
 
 	float k_diff = -1.*dot(real_normal, light_direction);
 
 	vec3 ambientColor =  vec3(0., 0.1, 0.2);
 	vec3 diffuseColor =  k_diff * vec3(0., 0.2, 0.4);
 	vec3 specularColor = k_spec * vec3(1., 1., 1.0);
-	vec3 a_specularColor =  a_k_spec * vec3(.8, 0.8, 0.8);
+	//vec3 a_specularColor =  a_k_spec * vec3(0.8, 0.8, 0.8);
 
 	//calc transparancy by distance from island
 	float transp = 0.35 ;
 
-	gl_FragColor = vec4(ambientColor +  diffuseColor + specularColor + a_specularColor, transp);
+	gl_FragColor = vec4(ambientColor +  diffuseColor + specularColor , transp);
 
     //gl_FragColor = vec4(spec_light, 1.);
 }
