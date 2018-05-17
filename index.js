@@ -222,11 +222,11 @@ function islandInit(){
  function palmInit(){
 	sceneRoot.add(palmTrans);
 
-	let alphaMapPic = new THREE.TextureLoader().load('objects/bw.jpg');
+	let alphaMapPic = new THREE.TextureLoader().load('objects/bw - opacity map.jpg');
 
 	let mtlLoader = new MTLLoader()
 	mtlLoader.setPath( 'objects/' )
-	mtlLoader.load( 'palme1.mtl', 
+	mtlLoader.load( 'palme.mtl', 
 		function ( materials ) {
 
 			materials.preload();
@@ -241,7 +241,7 @@ function islandInit(){
 
 			objLoader.setMaterials( materials );
 			objLoader.setPath( 'objects/' );
-			objLoader.load( 'palmiii.obj', 
+			objLoader.load( 'palm.obj', 
 				function ( object ) {
 					palmTrans.add( palmScale );
 					palmScale.add( object );
