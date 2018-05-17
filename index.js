@@ -128,6 +128,7 @@ function lightInit(){
 	sceneRoot.add( ambient );
 
 	pointLight = new THREE.PointLight( 0xff0000, 20., 800, 1.);
+
 	r_pointLight = new THREE.PointLight( 0xff0000, 2., 400 );
 	g_pointLight = new THREE.PointLight( 0x00ff00, 1., 200 );
 
@@ -191,6 +192,7 @@ function islandInit(){
 	let materialIsland = new THREE.MeshLambertMaterial( {color: 0x80ff80, wireframe: false,overdraw: 0.5 } );
 	let materialSphereIsland = new THREE.MeshLambertMaterial( {color: 0x80ff80, wireframe: false, transparent: true, opacity: 0.95});
 	materialSphereIsland.lights = true;
+	//materialSphereIsland.depthTest = false;
 	materialIsland.lights = true;
 	sceneRoot.add(islandTrans);
 	sceneRoot.add(islandSphereTrans);
@@ -221,17 +223,26 @@ function islandInit(){
  function palmInit(){
 	sceneRoot.add(palmTrans);
 
+	let alphaMapPic = new THREE.TextureLoader().load('objects/bw - opacity map.jpg');
+
 	let mtlLoader = new MTLLoader()
 	mtlLoader.setPath( 'objects/' )
-	mtlLoader.load( 'palme1.mtl', 
+	mtlLoader.load( 'palm.mtl', 
 		function ( materials ) {
 
 			materials.preload();
 			
-			let objLoader = new THREE.OBJLoader()
-			objLoader.setMaterials( materials )
-			objLoader.setPath( 'objects/' )
-			objLoader.load( 'palmiii.obj', 
+			let objLoader = new THREE.OBJLoader();
+			materials.materials.palme.transparent = true;
+			materials.materials.palme.side = THREE.DoubleSide;
+			materials.materials.palme.alphaMap = alphaMapPic;
+			materials.materials.palme.depthTest = false;
+
+			console.log(materials);
+
+			objLoader.setMaterials( materials );
+			objLoader.setPath( 'objects/' );
+			objLoader.load( 'palm.obj', 
 				function ( object ) {
 					palmTrans.add( palmScale );
 					palmScale.add( object );
@@ -239,8 +250,10 @@ function islandInit(){
 						console.log( ( 'Palm-obj:' + xhr.loaded / xhr.total * 100 ) + '% loaded' );
 					}, onError );
 		} );
-
  }
+
+
+
 
 function render() {
 
@@ -261,8 +274,8 @@ function render() {
 	
 	islandSphereTrans.position.set(0, -75, 0);
 
-	palmTrans.position.set(0, 0, 0);
-	palmScale.scale.set(0.1,0.1,0.1);
+	palmTrans.position.set(0, 6, 0);
+	palmScale.scale.set(0.19,0.19,0.19);
 	
 	// Render the scene
 	renderer.render( scene, camera );
