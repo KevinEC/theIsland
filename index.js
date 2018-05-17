@@ -191,6 +191,7 @@ function islandInit(){
 	let materialIsland = new THREE.MeshLambertMaterial( {color: 0x80ff80, wireframe: false,overdraw: 0.5 } );
 	let materialSphereIsland = new THREE.MeshLambertMaterial( {color: 0x80ff80, wireframe: false, transparent: true, opacity: 0.95});
 	materialSphereIsland.lights = true;
+	//materialSphereIsland.depthTest = false;
 	materialIsland.lights = true;
 	sceneRoot.add(islandTrans);
 	sceneRoot.add(islandSphereTrans);
@@ -221,6 +222,8 @@ function islandInit(){
  function palmInit(){
 	sceneRoot.add(palmTrans);
 
+	let alphaMapPic = new THREE.TextureLoader().load('objects/bw.jpg');
+
 	let mtlLoader = new MTLLoader()
 	mtlLoader.setPath( 'objects/' )
 	mtlLoader.load( 'palme1.mtl', 
@@ -228,9 +231,16 @@ function islandInit(){
 
 			materials.preload();
 			
-			let objLoader = new THREE.OBJLoader()
-			objLoader.setMaterials( materials )
-			objLoader.setPath( 'objects/' )
+			let objLoader = new THREE.OBJLoader();
+			materials.materials.palme1.transparent = true;
+			materials.materials.palme1.side = THREE.DoubleSide;
+			materials.materials.palme1.alphaMap = alphaMapPic;
+			materials.materials.palme1.depthTest = false;
+
+			console.log(materials);
+
+			objLoader.setMaterials( materials );
+			objLoader.setPath( 'objects/' );
 			objLoader.load( 'palmiii.obj', 
 				function ( object ) {
 					palmTrans.add( palmScale );
@@ -239,8 +249,10 @@ function islandInit(){
 						console.log( ( 'Palm-obj:' + xhr.loaded / xhr.total * 100 ) + '% loaded' );
 					}, onError );
 		} );
-
  }
+
+
+
 
 function render() {
 
