@@ -1,7 +1,7 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
-# File Created: 02.05.2018 11:03:40
+# File Created: 17.05.2018 11:24:38
 
-newmtl palme1
+newmtl palme
 	Ns 10.0000
 	Ni 1.5000
 	d 1.0000
@@ -12,6 +12,6 @@ newmtl palme1
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka texture.jpg
-	map_Kd texture.jpg
-	map_d bw.jpg
+	map_Ka H:\TNM061 - projekt\texture full tree.jpg
+	map_Kd H:\TNM061 - projekt\texture full tree.jpg
+	map_d H:\TNM061 - projekt\bw - opacity map.jpg
