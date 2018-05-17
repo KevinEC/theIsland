@@ -22,6 +22,8 @@ let oceanTrans = new THREE.Group();
 let oceanSpin = new THREE.Group();
 let islandTrans = new THREE.Group();
 let islandScale = new THREE.Group();
+let islandSphereTrans = new THREE.Group();
+let islandSphereScale = new THREE.Group();
 let palmTrans = new THREE.Group();
 let palmScale = new THREE.Group();
 let floorSpin = new THREE.Group();
@@ -29,6 +31,7 @@ let floorTrans = new THREE.Group();
 let floorMesh;
 let oceanMesh;
 let islandMesh;
+let islandSphereMesh;
 let skyBoxMesh;
 
 let clock = new THREE.Clock();
@@ -148,7 +151,6 @@ function lightInit(){
 function oceanInit(){
 	//Geometries and meshes
 	let geometryOcean = new THREE.PlaneBufferGeometry(1600, 1600, 1600, 1600);
-
 	let geometryFloor1 = new THREE.PlaneBufferGeometry(1600, 1600, 1600, 1600);
 
 
@@ -166,11 +168,12 @@ function oceanInit(){
 		wireframe: false,
 		transparent: true
 	});
-	let materialFloor = new THREE.MeshPhongMaterial({color: 0x0080ff, transparent: true, opacity: 0.8});
 
-	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean );
-	floorMesh = new THREE.Mesh(geometryFloor1, materialFloor);
-	materialFloor.needsUpdate = true;
+	let materialFloor1 = new THREE.MeshPhongMaterial({color: 0x0080ff, transparent: true, opacity: 0.8});
+
+	oceanMesh = new THREE.Mesh( geometryOcean, materialOcean);
+	floorMesh = new THREE.Mesh(geometryFloor1, materialFloor1);
+	materialFloor1.needsUpdate = true;
 
 	//Create ocean branches
 	sceneRoot.add( oceanTrans );
@@ -186,9 +189,14 @@ function oceanInit(){
 function islandInit(){
 	
 	let materialIsland = new THREE.MeshLambertMaterial( {color: 0x80ff80, wireframe: false,overdraw: 0.5 } );
-	materialIsland.flatShading = true;
+	let materialSphereIsland = new THREE.MeshLambertMaterial( {color: 0x80ff80, wireframe: false, transparent: true, opacity: 0.95});
+	materialSphereIsland.lights = true;
 	materialIsland.lights = true;
 	sceneRoot.add(islandTrans);
+	sceneRoot.add(islandSphereTrans);
+
+	let geometrySphereIsland = new THREE.SphereGeometry(80, 60, 60);
+	islandSphereMesh = new THREE.Mesh(geometrySphereIsland, materialSphereIsland);
 
 	let loader = new THREE.OBJLoader( );
 	loader.load( 'objects/island1.obj' , 
@@ -204,7 +212,10 @@ function islandInit(){
 		},  function ( xhr ) {
 				console.log( ( 'Island:' + xhr.loaded / xhr.total * 100 ) + '% loaded' );
 			}, onError
-	);	
+	);
+
+	islandSphereTrans.add(islandSphereScale);
+	islandSphereScale.add(islandSphereMesh);	
 }
 
  function palmInit(){
@@ -273,11 +284,13 @@ function render() {
 	oceanTrans.position.set(0, 0, 0);
 
 	floorSpin.rotation.x = -3.14/2;
-	floorTrans.position.set(0, -4, 0);
+	floorTrans.position.set(0, -2.5, 0);
 	
 	islandTrans.position.set(0, 0, 0);
 	islandScale.scale.set(4.,4.,4.);
 	
+	islandSphereTrans.position.set(0, -75, 0);
+
 	palmTrans.position.set(0, 0, 0);
 	palmScale.scale.set(0.1,0.1,0.1);
 	

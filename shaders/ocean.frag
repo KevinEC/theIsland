@@ -14,8 +14,6 @@ uniform vec3 cam_pos;
 void main()
 {
 
-
-
 	vec3 real_cam_pos = position4interpol - cam_pos;
 	vec3 a_light_direction = vec3(0.0,0.0,-1.0);
 
