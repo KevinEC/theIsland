@@ -219,9 +219,65 @@ function islandInit(){
 }
 
  function palmInit(){
+	sceneRoot.add(palmTrans);
+
+	let mtlLoader = new MTLLoader()
+	mtlLoader.setPath( 'objects/' )
+	mtlLoader.load( 'palme1.mtl', 
+		function ( materials ) {
+
+			materials.preload();
+			
+			let objLoader = new THREE.OBJLoader()
+			objLoader.setMaterials( materials )
+			objLoader.setPath( 'objects/' )
+			objLoader.load( 'palmiii.obj', 
+				function ( object ) {
+					palmTrans.add( palmScale );
+					palmScale.add( object );
+				}, function ( xhr ) {
+						console.log( ( 'Palm-obj:' + xhr.loaded / xhr.total * 100 ) + '% loaded' );
+					}, onError );
+		} );
+
+ }
+
+function render() {
+
+	time = clock.getElapsedTime();
+
+	oceanMesh.material.uniforms.time.value = time;
+
 	
+	//perform animations
+	oceanSpin.rotation.x = -3.14/2;
+	oceanTrans.position.set(0, 0, 0);
+
+	floorSpin.rotation.x = -3.14/2;
+	floorTrans.position.set(0, -2.5, 0);
 	
-	let materialPalm = new THREE.MeshLambertMaterial( {color: 0x80ff80, wireframe: false,overdraw: 0.5 } );
+	islandTrans.position.set(0, 0, 0);
+	islandScale.scale.set(4.,4.,4.);
+	
+	islandSphereTrans.position.set(0, -75, 0);
+
+	palmTrans.position.set(0, 0, 0);
+	palmScale.scale.set(0.1,0.1,0.1);
+	
+	// Render the scene
+	renderer.render( scene, camera );
+}
+
+function animate () {
+	requestAnimationFrame( animate );
+	render();
+}
+
+init();
+animate();
+
+
+/*	let materialPalm = new THREE.MeshLambertMaterial( {color: 0x80ff80, wireframe: false,overdraw: 0.5 } );
 	materialPalm.flatShading = true;
 	materialPalm.lights = true;
 	
@@ -270,93 +326,4 @@ function islandInit(){
 				}, onError
 		);
  
- }
-
-function render() {
-
-	time = clock.getElapsedTime();
-
-	oceanMesh.material.uniforms.time.value = time;
-
-	
-	//perform animations
-	oceanSpin.rotation.x = -3.14/2;
-	oceanTrans.position.set(0, 0, 0);
-
-	floorSpin.rotation.x = -3.14/2;
-	floorTrans.position.set(0, -2.5, 0);
-	
-	islandTrans.position.set(0, 0, 0);
-	islandScale.scale.set(4.,4.,4.);
-	
-	islandSphereTrans.position.set(0, -75, 0);
-
-	palmTrans.position.set(0, 0, 0);
-	palmScale.scale.set(0.1,0.1,0.1);
-	
-	// Render the scene
-	renderer.render( scene, camera );
-}
-
-function animate () {
-	requestAnimationFrame( animate );
-	render();
-}
-
-init();
-animate();
-
-
-
-/*	//bool to make sure object is loaded before texture
-	let objectLoaded = false;
-	
-	//let materialPalm = new THREE.MeshBasicMaterial( {color: 0xFF01FF, wireframe: false } );
-	
-	sceneRoot.add(palmTrans);
-	
-	let manager_ = new THREE.LoadingManager();
-	manager_.onProgress = function ( item, loaded, total ) {
-		console.log( item, loaded, total );
-	};
-
-
-	var mtlLoader = new MTLLoader();
-		
-		mtlLoader.setPath('objects/'); //till mtl-filen
-		mtlLoader.load ('palme1.mtl', 
-
-			function(palmMaterial) {
-
-				palmMaterial.preload();
-
-				console.log( palmMaterial );
-				
-				var objLoader = new THREE.OBJLoader(  );
-				
-				//objLoader.setMaterials( palmMaterial );
-				objLoader.setPath('objects/'); 
-				objLoader.load( 'palmiii.obj' , 
-				
-					function (geometryPalm) {
-						//console.log(palmMaterial.materials.palme1);
-						palmTrans.add( palmScale );
-						palmScale.add( geometryPalm);
-
-						//objLoader.setMaterials( palmMaterial.materials.palme1 );
-						// set map
-						//geometryPalm.children[0].material = palmMaterial.materials.palme1;
-
-
-						console.log(geometryPalm.children[0].material);
-
-					}, onProgress, onError
-				);
-				
-			},  onProgress, onError
-		);
-		
-	
-	
- //console.log(mtlLoader);
 */
