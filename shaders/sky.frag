@@ -52,5 +52,12 @@ void main()
 	}
 
 	//gl_FragColor = vec4(horizon_k, horizon_k, horizon_k, 1);
-	gl_FragColor = vec4( color * (1. - horizon_k) + vec3(0.7, 0.3, 0.)* horizon_k , 1.);
+	if (posInterpolL.y < -5.)
+	{
+		gl_FragColor = vec4(0., 0., 0., 1.);
+	} else
+	{
+		gl_FragColor = vec4( color * (1. - horizon_k) + vec3(0.7, 0.3, 0.)* horizon_k , 1.);
+	}
+	
 }

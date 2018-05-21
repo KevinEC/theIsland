@@ -127,7 +127,7 @@ function lightInit(){
 	var ambient = new THREE.AmbientLight( 0xffffff  , 0.3 );
 	sceneRoot.add( ambient );
 
-	pointLight = new THREE.PointLight( 0xff0000, 20., 800, 1.);
+	pointLight = new THREE.PointLight( 0xff0000, 15., 850, 1.);
 
 	r_pointLight = new THREE.PointLight( 0xff0000, 2., 400 );
 	g_pointLight = new THREE.PointLight( 0x00ff00, 1., 200 );
@@ -200,8 +200,36 @@ function islandInit(){
 	let geometrySphereIsland = new THREE.SphereGeometry(80, 60, 60);
 	islandSphereMesh = new THREE.Mesh(geometrySphereIsland, materialSphereIsland);
 
-	let loader = new THREE.OBJLoader( );
-	loader.load( 'objects/island.obj' , 
+
+	let mtlLoader = new MTLLoader()
+	mtlLoader.setPath( 'objects/' )
+	mtlLoader.load( 'newisland.mtl', 
+		function ( materials ) {
+
+			materials.preload();
+			
+			let objLoader = new THREE.OBJLoader();
+
+			console.log(materials);
+
+			objLoader.setMaterials( materials );
+			objLoader.setPath( 'objects/' );
+			objLoader.load( 'newisland.obj', 
+				function ( object ) {
+
+					islandTrans.add( islandScale );
+					islandScale.add( object );
+
+				}, function ( xhr ) {
+						console.log( ( 'island1-obj:' + xhr.loaded / xhr.total * 100 ) + '% loaded' );
+					}, onError );
+	} );
+
+
+
+	//Island without texture
+	/*let loader = new THREE.OBJLoader( );
+	loader.load( 'objects/newisland.obj' , 
 		
 		function (geometryIsland) {
 		geometryIsland.traverse( function ( child ) {
@@ -214,10 +242,10 @@ function islandInit(){
 		},  function ( xhr ) {
 				console.log( ( 'Island:' + xhr.loaded / xhr.total * 100 ) + '% loaded' );
 			}, onError
-	);
+	);*/
 
-	islandSphereTrans.add(islandSphereScale);
-	islandSphereScale.add(islandSphereMesh);	
+	//islandSphereTrans.add(islandSphereScale);
+	//islandSphereScale.add(islandSphereMesh);	
 }
 
  function palmInit(){
@@ -269,8 +297,8 @@ function render() {
 	floorSpin.rotation.x = -3.14/2;
 	floorTrans.position.set(0, -2.5, 0);
 	
-	islandTrans.position.set(0, 2, 0);
-	islandScale.scale.set(0.5,0.5,0.5);
+	islandTrans.position.set(0, 1.8, 0);
+	islandScale.scale.set(2,1.25,2);
 	
 	islandSphereTrans.position.set(0, -75, 0);
 
